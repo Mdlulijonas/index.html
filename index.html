@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SA Invoice-to-Payment Live Dashboard</title>
+    <title>SA Vehicle Services Dashboard - Live Operations</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
         :root {
             --primary-blue: #007749; /* South African green */
@@ -15,6 +16,9 @@
             --success-green: #0e9f6e;
             --warning-orange: #ff8a4c;
             --danger-red: #DE3831; /* South African red */
+            --police-blue: #1a237e;
+            --health-green: #2e7d32;
+            --municipal-orange: #ef6c00;
             --gray-50: #f9fafb;
             --gray-100: #f3f4f6;
             --gray-200: #e5e7eb;
@@ -38,7 +42,7 @@
         
         .dashboard-container {
             display: grid;
-            grid-template-columns: 250px 1fr;
+            grid-template-columns: 280px 1fr;
             min-height: 100vh;
         }
         
@@ -49,6 +53,7 @@
             padding: 25px 15px;
             box-shadow: 3px 0 15px rgba(0,0,0,0.1);
             z-index: 100;
+            position: relative;
         }
         
         .logo {
@@ -87,6 +92,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            position: relative;
         }
         
         .nav-item:hover, .nav-item.active {
@@ -99,6 +105,16 @@
             text-align: center;
         }
         
+        .nav-badge {
+            position: absolute;
+            right: 15px;
+            background: var(--danger-red);
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+        
         /* Main Content */
         .main-content {
             padding: 20px;
@@ -109,7 +125,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             padding-bottom: 20px;
             border-bottom: 1px solid var(--gray-200);
         }
@@ -153,9 +169,12 @@
             background-color: white;
             font-weight: 500;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .refresh-btn {
+        .report-btn {
             background-color: var(--primary-blue);
             color: white;
             border: none;
@@ -169,17 +188,77 @@
             transition: background-color 0.3s;
         }
         
+        .refresh-btn {
+            background-color: var(--secondary-blue);
+            color: var(--gray-900);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+        }
+        
         .refresh-btn:hover {
+            background-color: #e6a300;
+        }
+        
+        .report-btn:hover {
             background-color: #005a36;
         }
         
-        .refresh-btn.spinning i {
+        .refresh-btn.spinning i, .report-btn.spinning i {
             animation: spin 1s linear infinite;
         }
         
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        
+        /* Department Tabs */
+        .department-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .dept-tab {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: white;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dept-tab.active {
+            border-color: var(--primary-blue);
+            background-color: rgba(0, 119, 73, 0.1);
+        }
+        
+        .dept-tab.police {
+            border-left: 4px solid var(--police-blue);
+        }
+        
+        .dept-tab.health {
+            border-left: 4px solid var(--health-green);
+        }
+        
+        .dept-tab.municipal {
+            border-left: 4px solid var(--municipal-orange);
+        }
+        
+        .dept-tab.emergency {
+            border-left: 4px solid var(--danger-red);
         }
         
         /* KPI Cards */
@@ -197,6 +276,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             border-left: 5px solid var(--primary-blue);
             transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
         }
         
         .kpi-card:hover {
@@ -253,6 +333,39 @@
         
         .trend-down {
             color: var(--danger-red);
+        }
+        
+        /* Live Call Stats */
+        .live-call-stats {
+            background: linear-gradient(90deg, #002395, #1a56db);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .call-stat {
+            text-align: center;
+        }
+        
+        .call-stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+        
+        .call-stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .call-stat.active-calls {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
         }
         
         /* Charts Grid */
@@ -317,13 +430,14 @@
             border-radius: 8px;
         }
         
-        /* Data Table */
-        .data-table-container {
+        /* SAPS/Department Table */
+        .department-table-container {
             background-color: white;
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             overflow-x: auto;
+            margin-bottom: 30px;
         }
         
         .table-header {
@@ -381,6 +495,18 @@
             color: var(--danger-red);
         }
         
+        .dept-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .dept-police { background: rgba(26, 35, 126, 0.1); color: var(--police-blue); }
+        .dept-health { background: rgba(46, 125, 50, 0.1); color: var(--health-green); }
+        .dept-municipal { background: rgba(239, 108, 0, 0.1); color: var(--municipal-orange); }
+        
         /* Alert Banner */
         .alert-banner {
             background: linear-gradient(90deg, var(--danger-red), #e74c3c);
@@ -413,38 +539,37 @@
             cursor: pointer;
         }
         
-        /* Regional Stats */
-        .regional-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+        /* Report Modal */
+        .report-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
         }
         
-        .region-card {
+        .report-content {
             background: white;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--primary-blue);
+            width: 90%;
+            max-width: 800px;
+            border-radius: 12px;
+            padding: 30px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
-        .region-name {
-            font-weight: 600;
-            color: var(--gray-700);
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        
-        .region-metric {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--gray-900);
-        }
-        
-        .region-sub {
-            font-size: 12px;
-            color: var(--gray-700);
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-200);
         }
         
         /* Responsive */
@@ -454,7 +579,7 @@
             }
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .dashboard-container {
                 grid-template-columns: 1fr;
             }
@@ -464,7 +589,7 @@
             }
             
             .kpi-container {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .header {
@@ -472,15 +597,25 @@
                 gap: 15px;
                 align-items: flex-start;
             }
+        }
+        
+        @media (max-width: 768px) {
+            .kpi-container {
+                grid-template-columns: 1fr;
+            }
             
-            .regional-stats {
+            .live-call-stats {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
         
         @media (max-width: 480px) {
-            .regional-stats {
+            .live-call-stats {
                 grid-template-columns: 1fr;
+            }
+            
+            .department-tabs {
+                flex-direction: column;
             }
         }
     </style>
@@ -490,8 +625,8 @@
         <!-- Sidebar Navigation -->
         <nav class="sidebar">
             <div class="logo">
-                <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
-                <div class="logo-text">SA InvoiceFlow</div>
+                <div class="logo-icon"><i class="fas fa-tachometer-alt"></i></div>
+                <div class="logo-text">SA Vehicle Services</div>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item active">
@@ -499,16 +634,22 @@
                     <span>Dashboard</span>
                 </li>
                 <li class="nav-item">
-                    <i class="fas fa-cogs"></i>
-                    <span>Operations</span>
+                    <i class="fas fa-car"></i>
+                    <span>Fleet Management</span>
+                    <span class="nav-badge">24</span>
                 </li>
                 <li class="nav-item">
                     <i class="fas fa-file-invoice-dollar"></i>
-                    <span>Financials</span>
+                    <span>Invoices</span>
                 </li>
                 <li class="nav-item">
                     <i class="fas fa-map-marked-alt"></i>
                     <span>Job Distribution</span>
+                </li>
+                <li class="nav-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>3CX Calls</span>
+                    <span class="nav-badge" id="liveCallsBadge">12</span>
                 </li>
                 <li class="nav-item">
                     <i class="fas fa-flag"></i>
@@ -516,12 +657,24 @@
                 </li>
                 <li class="nav-item">
                     <i class="fas fa-chart-bar"></i>
-                    <span>Analytics</span>
+                    <span>Performance Reports</span>
                 </li>
                 <li class="nav-item">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </li>
+                <!-- 3CX Status -->
+                <div class="call-center-status" style="margin-top: 30px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <i class="fas fa-phone-volume" style="color: #4CAF50;"></i>
+                        <strong>3CX Status</strong>
+                    </div>
+                    <div style="font-size: 12px;">
+                        <div>Connected: <span id="pbxStatus" style="color: #4CAF50;">Online</span></div>
+                        <div>Agents: <span id="activeAgents">8/12</span></div>
+                        <div>Queue: <span id="callQueue">4 calls</span></div>
+                    </div>
+                </div>
             </ul>
         </nav>
 
@@ -535,22 +688,26 @@
                         <div class="sa-blue"></div>
                         <div class="sa-green"></div>
                     </div>
-                    South Africa Invoice-to-Payment Live Dashboard
+                    Vehicle Services Live Dashboard
                 </h1>
                 <div class="header-controls">
                     <div class="time-filter">
                         <i class="far fa-clock"></i>
-                        <span>Last 24 Hours</span>
+                        <span id="timeRange">Today</span>
                         <i class="fas fa-chevron-down"></i>
                     </div>
+                    <button class="report-btn" id="reportBtn">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Generate Report</span>
+                    </button>
                     <button class="refresh-btn" id="refreshBtn">
                         <i class="fas fa-sync-alt"></i>
-                        <span>Refresh Data</span>
+                        <span>Refresh</span>
                     </button>
                 </div>
             </header>
 
-            <!-- Alert Banner (conditionally shown) -->
+            <!-- Alert Banner -->
             <div class="alert-banner" id="alertBanner" style="display: none;">
                 <div class="alert-content">
                     <i class="fas fa-exclamation-triangle"></i>
@@ -561,27 +718,47 @@
                 </button>
             </div>
 
-            <!-- Regional Performance -->
-            <section class="regional-stats">
-                <div class="region-card">
-                    <div class="region-name">Gauteng</div>
-                    <div class="region-metric">94.2%</div>
-                    <div class="region-sub">Auto-Validation Rate</div>
+            <!-- Live 3CX Call Stats -->
+            <section class="live-call-stats">
+                <div class="call-stat active-calls">
+                    <div class="call-stat-value" id="activeCalls">8</div>
+                    <div class="call-stat-label">Active Calls</div>
                 </div>
-                <div class="region-card">
-                    <div class="region-name">Western Cape</div>
-                    <div class="region-metric">91.8%</div>
-                    <div class="region-sub">Auto-Validation Rate</div>
+                <div class="call-stat">
+                    <div class="call-stat-value" id="todayCalls">142</div>
+                    <div class="call-stat-label">Calls Today</div>
                 </div>
-                <div class="region-card">
-                    <div class="region-name">KwaZulu-Natal</div>
-                    <div class="region-metric">88.5%</div>
-                    <div class="region-sub">Auto-Validation Rate</div>
+                <div class="call-stat">
+                    <div class="call-stat-value" id="avgWaitTime">1:24</div>
+                    <div class="call-stat-label">Avg Wait Time</div>
                 </div>
-                <div class="region-card">
-                    <div class="region-name">Eastern Cape</div>
-                    <div class="region-metric">86.3%</div>
-                    <div class="region-sub">Auto-Validation Rate</div>
+                <div class="call-stat">
+                    <div class="call-stat-value" id="callAbandonment">4.2%</div>
+                    <div class="call-stat-label">Abandonment Rate</div>
+                </div>
+            </section>
+
+            <!-- Department Tabs -->
+            <section class="department-tabs">
+                <div class="dept-tab police active" data-dept="police">
+                    <i class="fas fa-shield-alt"></i>
+                    SAPS Vehicles
+                </div>
+                <div class="dept-tab health" data-dept="health">
+                    <i class="fas fa-ambulance"></i>
+                    Health Department
+                </div>
+                <div class="dept-tab municipal" data-dept="municipal">
+                    <i class="fas fa-truck"></i>
+                    Municipal Services
+                </div>
+                <div class="dept-tab emergency" data-dept="emergency">
+                    <i class="fas fa-fire-extinguisher"></i>
+                    Emergency Services
+                </div>
+                <div class="dept-tab" data-dept="all">
+                    <i class="fas fa-list"></i>
+                    All Departments
                 </div>
             </section>
 
@@ -640,7 +817,7 @@
             <section class="charts-grid">
                 <div class="chart-container">
                     <div class="chart-header">
-                        <div class="chart-title">Call Centre Performance</div>
+                        <div class="chart-title">Call Centre Performance (3CX)</div>
                         <div class="chart-legend">
                             <div class="legend-item">
                                 <div class="legend-color" style="background-color: var(--primary-blue);"></div>
@@ -657,52 +834,52 @@
                 
                 <div class="chart-container">
                     <div class="chart-header">
-                        <div class="chart-title">Invoice Validation Results</div>
+                        <div class="chart-title">Department Performance</div>
                         <div class="chart-legend">
                             <div class="legend-item">
-                                <div class="legend-color" style="background-color: var(--success-green);"></div>
-                                <span>3-Point Match</span>
+                                <div class="legend-color" style="background-color: var(--police-blue);"></div>
+                                <span>SAPS</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-color" style="background-color: var(--warning-orange);"></div>
-                                <span>Partial Match</span>
+                                <div class="legend-color" style="background-color: var(--health-green);"></div>
+                                <span>Health</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-color" style="background-color: var(--danger-red);"></div>
-                                <span>Mismatch</span>
+                                <div class="legend-color" style="background-color: var(--municipal-orange);"></div>
+                                <span>Municipal</span>
                             </div>
                         </div>
                     </div>
-                    <canvas id="validationChart"></canvas>
+                    <canvas id="departmentChart"></canvas>
                 </div>
             </section>
 
             <!-- Map Section -->
             <section class="map-container">
                 <div class="chart-header">
-                    <div class="chart-title">Live Job Distribution Across South Africa</div>
+                    <div class="chart-title">Live Vehicle Distribution - Gauteng Region</div>
                     <div class="chart-legend">
                         <div class="legend-item">
-                            <div class="legend-color" style="background-color: var(--primary-blue);"></div>
-                            <span>High Activity</span>
+                            <div class="legend-color" style="background-color: var(--police-blue);"></div>
+                            <span>SAPS</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color" style="background-color: var(--secondary-blue);"></div>
-                            <span>Medium Activity</span>
+                            <div class="legend-color" style="background-color: var(--health-green);"></div>
+                            <span>Health Dept</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color" style="background-color: var(--gray-200);"></div>
-                            <span>Low Activity</span>
+                            <div class="legend-color" style="background-color: var(--municipal-orange);"></div>
+                            <span>Municipal</span>
                         </div>
                     </div>
                 </div>
                 <div id="jobDistributionMap"></div>
             </section>
 
-            <!-- Data Table Section -->
-            <section class="data-table-container">
+            <!-- SAPS/Department Table -->
+            <section class="department-table-container">
                 <div class="table-header">
-                    <div class="chart-title">Recent Disputes & Interventions</div>
+                    <div class="chart-title">Active Service Requests by SAPS Station & Department</div>
                     <button class="refresh-btn" id="refreshTable">
                         <i class="fas fa-sync-alt"></i>
                         <span>Refresh</span>
@@ -711,41 +888,123 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Invoice ID</th>
-                            <th>Merchant</th>
-                            <th>Province</th>
-                            <th>Issue Type</th>
-                            <th>Validation Result</th>
-                            <th>Escalation Level</th>
+                            <th>Vehicle ID</th>
+                            <th>Department</th>
+                            <th>SAPS Station/Area</th>
+                            <th>Service Type</th>
                             <th>Status</th>
-                            <th>Time Open</th>
+                            <th>Invoice Status</th>
+                            <th>Last Updated</th>
                         </tr>
                     </thead>
-                    <tbody id="disputesTable">
-                        <!-- Data will be populated by JavaScript -->
+                    <tbody id="departmentTable">
+                        <!-- Data populated by JavaScript -->
                     </tbody>
                 </table>
             </section>
         </main>
     </div>
 
+    <!-- Report Modal -->
+    <div class="report-modal" id="reportModal">
+        <div class="report-content">
+            <div class="report-header">
+                <h2><i class="fas fa-file-pdf"></i> Performance Report Generator</h2>
+                <button class="alert-close" id="closeReport">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="report-body">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Report Period:</label>
+                    <select id="reportPeriod" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--gray-200);">
+                        <option value="daily">Daily Report (Today)</option>
+                        <option value="weekly">Weekly Report (This Week)</option>
+                        <option value="monthly">Monthly Report (This Month)</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Department:</label>
+                    <select id="reportDept" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--gray-200);">
+                        <option value="all">All Departments</option>
+                        <option value="police">SAPS Vehicles</option>
+                        <option value="health">Health Department</option>
+                        <option value="municipal">Municipal Services</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Include:</label>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                        <label><input type="checkbox" checked> Call Centre Metrics</label>
+                        <label><input type="checkbox" checked> Invoice Validation</label>
+                        <label><input type="checkbox" checked> Department Performance</label>
+                        <label><input type="checkbox" checked> Financial Summary</label>
+                        <label><input type="checkbox" checked> SLA Compliance</label>
+                        <label><input type="checkbox" checked> Recommendations</label>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button class="report-btn" id="generatePDF" style="flex: 1;">
+                        <i class="fas fa-file-pdf"></i> Generate PDF
+                    </button>
+                    <button class="refresh-btn" id="generateExcel" style="flex: 1;">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Initialize the dashboard with sample data
+        // South African Departments and SAPS Stations
+        const departments = {
+            police: {
+                name: "SAPS Vehicles",
+                color: "#1a237e",
+                stations: [
+                    { name: "Soweto - Maponya SAPS", vehicles: 12, active: 8 },
+                    { name: "Soweto - Pimville SAPS", vehicles: 8, active: 5 },
+                    { name: "Pretoria - Sunnyside SAPS", vehicles: 15, active: 10 },
+                    { name: "Mabopane SAPS", vehicles: 10, active: 7 },
+                    { name: "Johannesburg Central", vehicles: 20, active: 14 },
+                    { name: "Sandton SAPS", vehicles: 12, active: 9 }
+                ]
+            },
+            health: {
+                name: "Health Department",
+                color: "#2e7d32",
+                stations: [
+                    { name: "Limpopo - Matoks Hospital", vehicles: 8, active: 6 },
+                    { name: "Chris Hani Baragwanath", vehicles: 15, active: 11 },
+                    { name: "Steve Biko Hospital", vehicles: 10, active: 8 },
+                    { name: "Tygerberg Hospital", vehicles: 12, active: 9 }
+                ]
+            },
+            municipal: {
+                name: "Municipal Services",
+                color: "#ef6c00",
+                stations: [
+                    { name: "Johannesburg Metro", vehicles: 25, active: 18 },
+                    { name: "Tshwane Metro", vehicles: 20, active: 15 },
+                    { name: "Ekurhuleni Metro", vehicles: 18, active: 13 }
+                ]
+            }
+        };
+
+        // Initialize the dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize all components
             initKPICards();
             initCharts();
             initMap();
-            initDataTable();
+            initDepartmentTable();
             initEventListeners();
-            
-            // Simulate real-time updates
             startLiveUpdates();
+            simulate3CXIntegration();
         });
-        
+
         // Initialize KPI cards with dynamic data
         function initKPICards() {
-            // These values would normally come from an API
             const kpiData = {
                 slaTime: (Math.random() * 4 + 14).toFixed(1) + " min",
                 fcrRate: (Math.random() * 6 + 84).toFixed(1) + "%",
@@ -753,34 +1012,31 @@
                 revenueSaved: "R " + (Math.random() * 200 + 500).toFixed(1) + "K"
             };
             
-            // Update DOM elements
             document.getElementById('slaTime').textContent = kpiData.slaTime;
             document.getElementById('fcrRate').textContent = kpiData.fcrRate;
             document.getElementById('autoValidated').textContent = kpiData.autoValidated;
             document.getElementById('revenueSaved').textContent = kpiData.revenueSaved;
             
-            // Highlight SLA breach if time > 15 min
             const slaValue = parseFloat(kpiData.slaTime);
             const slaCard = document.getElementById('slaCard');
             if (slaValue > 15) {
                 slaCard.classList.add('alert');
-                showAlert(`SLA Alert: Approval response time (${slaValue} min) exceeds 15-minute SLA`, 'warning');
             } else {
                 slaCard.classList.remove('alert');
             }
         }
-        
-        // Initialize charts using Chart.js
+
+        // Initialize charts
         function initCharts() {
             // Call Centre Performance Chart
             const callCenterCtx = document.getElementById('callCenterChart').getContext('2d');
-            const callCenterChart = new Chart(callCenterCtx, {
+            window.callCenterChart = new Chart(callCenterCtx, {
                 type: 'line',
                 data: {
                     labels: ['06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00'],
                     datasets: [
                         {
-                            label: 'Abandoned Call Rate',
+                            label: 'Abandoned Calls',
                             data: [6.2, 8.1, 7.3, 5.9, 9.2, 6.8, 4.5],
                             borderColor: 'rgba(0, 119, 73, 1)',
                             backgroundColor: 'rgba(0, 119, 73, 0.1)',
@@ -801,378 +1057,359 @@
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
                         y: {
                             beginAtZero: false,
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            },
-                            ticks: {
-                                callback: function(value) {
-                                    return value + '%';
-                                }
-                            }
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                            ticks: { callback: value => value + '%' }
                         },
-                        x: {
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            }
-                        }
+                        x: { grid: { color: 'rgba(0, 0, 0, 0.05)' } }
                     }
                 }
             });
-            
-            // Invoice Validation Chart
-            const validationCtx = document.getElementById('validationChart').getContext('2d');
-            const validationChart = new Chart(validationCtx, {
-                type: 'doughnut',
+
+            // Department Performance Chart
+            const deptCtx = document.getElementById('departmentChart').getContext('2d');
+            window.departmentChart = new Chart(deptCtx, {
+                type: 'bar',
                 data: {
-                    labels: ['3-Point Match', 'Partial Match', 'Mismatch'],
+                    labels: ['SAPS', 'Health', 'Municipal', 'Emergency'],
                     datasets: [{
-                        data: [68, 22, 10],
+                        label: 'Service Completion %',
+                        data: [94, 88, 91, 86],
                         backgroundColor: [
-                            'rgba(14, 159, 110, 0.8)',
-                            'rgba(255, 184, 28, 0.8)',
+                            'rgba(26, 35, 126, 0.8)',
+                            'rgba(46, 125, 50, 0.8)',
+                            'rgba(239, 108, 0, 0.8)',
                             'rgba(222, 56, 49, 0.8)'
                         ],
                         borderColor: [
-                            'rgba(14, 159, 110, 1)',
-                            'rgba(255, 184, 28, 1)',
-                            'rgba(222, 56, 49, 1)'
+                            'rgb(26, 35, 126)',
+                            'rgb(46, 125, 50)',
+                            'rgb(239, 108, 0)',
+                            'rgb(222, 56, 49)'
                         ],
-                        borderWidth: 2,
-                        hoverOffset: 10
+                        borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
-                    cutout: '65%',
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true,
-                                pointStyle: 'circle'
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = Math.round((value / total) * 100);
-                                    return `${label}: ${value} invoices (${percentage}%)`;
-                                }
-                            }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { callback: value => value + '%' }
                         }
                     }
                 }
             });
-            
-            // Store chart instances for updates
-            window.dashboardCharts = {
-                callCenter: callCenterChart,
-                validation: validationChart
-            };
         }
-        
-        // Initialize the job distribution map for South Africa
+
+        // Initialize map with SAPS stations
         function initMap() {
-            // Initialize the map centered on South Africa
-            const map = L.map('jobDistributionMap').setView([-28.5, 25], 5);
+            const map = L.map('jobDistributionMap').setView([-26.2041, 28.0473], 10);
             
-            // Add tile layer
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
-            
-            // South African cities and job locations
-            const saJobLocations = [
-                {lat: -26.2041, lng: 28.0473, intensity: 0.9, city: "Johannesburg", province: "Gauteng", jobs: 215},
-                {lat: -33.9249, lng: 18.4241, intensity: 0.8, city: "Cape Town", province: "Western Cape", jobs: 178},
-                {lat: -29.8587, lng: 31.0218, intensity: 0.7, city: "Durban", province: "KwaZulu-Natal", jobs: 142},
-                {lat: -25.7479, lng: 28.2293, intensity: 0.6, city: "Pretoria", province: "Gauteng", jobs: 128},
-                {lat: -26.2708, lng: 27.9845, intensity: 0.5, city: "Vereeniging", province: "Gauteng", jobs: 98},
-                {lat: -33.9608, lng: 25.6022, intensity: 0.6, city: "Port Elizabeth", province: "Eastern Cape", jobs: 105},
-                {lat: -26.6639, lng: 27.9784, intensity: 0.4, city: "Potchefstroom", province: "North West", jobs: 76},
-                {lat: -25.6546, lng: 27.2449, intensity: 0.5, city: "Rustenburg", province: "North West", jobs: 82},
-                {lat: -28.7323, lng: 24.7623, intensity: 0.3, city: "Kimberley", province: "Northern Cape", jobs: 58},
-                {lat: -24.6282, lng: 25.9231, intensity: 0.4, city: "Gaborone", province: "International", jobs: 45},
-                {lat: -25.8606, lng: 28.1892, intensity: 0.7, city: "Centurion", province: "Gauteng", jobs: 112},
-                {lat: -34.0363, lng: 23.0471, intensity: 0.5, city: "George", province: "Western Cape", jobs: 79},
-                {lat: -23.8965, lng: 29.4486, intensity: 0.4, city: "Polokwane", province: "Limpopo", jobs: 65},
-                {lat: -27.7696, lng: 30.7916, intensity: 0.4, city: "Newcastle", province: "KwaZulu-Natal", jobs: 71},
-                {lat: -32.9833, lng: 27.8667, intensity: 0.3, city: "East London", province: "Eastern Cape", jobs: 54}
+
+            // SAPS Stations in Gauteng
+            const sapsStations = [
+                {lat: -26.2675, lng: 27.8587, name: "Maponya SAPS", dept: "police", vehicles: 12},
+                {lat: -26.2456, lng: 27.8512, name: "Pimville SAPS", dept: "police", vehicles: 8},
+                {lat: -25.7547, lng: 28.2187, name: "Sunnyside SAPS", dept: "police", vehicles: 15},
+                {lat: -25.5083, lng: 28.1000, name: "Mabopane SAPS", dept: "police", vehicles: 10},
+                {lat: -26.2041, lng: 28.0473, name: "JHB Central SAPS", dept: "police", vehicles: 20},
+                {lat: -26.1076, lng: 28.0567, name: "Sandton SAPS", dept: "police", vehicles: 12},
+                {lat: -25.7598, lng: 28.1994, name: "Steve Biko Hospital", dept: "health", vehicles: 10},
+                {lat: -26.1629, lng: 27.9867, name: "Bara Hospital", dept: "health", vehicles: 15},
+                {lat: -26.1076, lng: 28.0567, name: "JHB Metro", dept: "municipal", vehicles: 25},
+                {lat: -25.7547, lng: 28.2187, name: "Tshwane Metro", dept: "municipal", vehicles: 20}
             ];
-            
-            // Add markers for each job location
-            saJobLocations.forEach(location => {
-                // Determine color based on intensity
+
+            sapsStations.forEach(station => {
                 let color;
-                if (location.intensity > 0.7) {
-                    color = '#007749'; // High activity
-                } else if (location.intensity > 0.5) {
-                    color = '#FFB81C'; // Medium activity
-                } else {
-                    color = '#e5e7eb'; // Low activity
-                }
-                
-                // Create circle marker
-                const circle = L.circleMarker([location.lat, location.lng], {
-                    radius: Math.sqrt(location.jobs) * 1.5,
+                if (station.dept === "police") color = "#1a237e";
+                else if (station.dept === "health") color = "#2e7d32";
+                else color = "#ef6c00";
+
+                L.circleMarker([station.lat, station.lng], {
+                    radius: Math.sqrt(station.vehicles) * 2,
                     fillColor: color,
                     color: '#111827',
                     weight: 1,
-                    opacity: 1,
                     fillOpacity: 0.7
-                }).addTo(map);
-                
-                // Add popup with location info
-                circle.bindPopup(`
-                    <strong>${location.city}</strong><br>
-                    <small>${location.province}</small><br>
-                    Active Jobs: ${location.jobs}<br>
-                    Allocation Engine: ${(location.intensity * 100).toFixed(0)}% utilized
+                }).addTo(map).bindPopup(`
+                    <strong>${station.name}</strong><br>
+                    Department: ${departments[station.dept].name}<br>
+                    Total Vehicles: ${station.vehicles}<br>
+                    Active Now: ${Math.floor(station.vehicles * 0.7)}
                 `);
             });
             
-            // Store map instance for updates
             window.jobDistributionMap = map;
         }
-        
-        // Initialize the disputes data table with South African data
-        function initDataTable() {
-            const disputesData = [
-                {id: 'INV-SA-2023-04567', merchant: 'TechFix SA', province: 'Gauteng', issue: 'Part Number Mismatch', validation: 'Failed', escalation: 'Tier 2', status: 'Pending', time: '2h 15m'},
-                {id: 'INV-SA-2023-04568', merchant: 'HomeRepair Co', province: 'Western Cape', issue: 'Rate Card Variance', validation: 'Partial', escalation: 'Tier 1', status: 'Resolved', time: '1h 30m'},
-                {id: 'INV-SA-2023-04569', merchant: 'AutoCare Plus', province: 'KwaZulu-Natal', issue: 'Job Card Missing', validation: 'Failed', escalation: 'Tier 3', status: 'Escalated', time: '4h 45m'},
-                {id: 'INV-SA-2023-04570', merchant: 'BuildRight SA', province: 'Gauteng', issue: 'Duplicate Invoice', validation: 'Failed', escalation: 'Tier 2', status: 'Pending', time: '3h 20m'},
-                {id: 'INV-SA-2023-04571', merchant: 'FastFix Services', province: 'Eastern Cape', issue: 'Contract Rate Issue', validation: 'Partial', escalation: 'Tier 1', status: 'Resolved', time: '0h 55m'},
-                {id: 'INV-SA-2023-04572', merchant: 'Precision Repairs', province: 'Gauteng', issue: 'Quantity Discrepancy', validation: 'Failed', escalation: 'Tier 2', status: 'Under Review', time: '5h 10m'},
-                {id: 'INV-SA-2023-04573', merchant: 'UrbanFix Network', province: 'Western Cape', issue: 'Authorization Missing', validation: 'Failed', escalation: 'Tier 3', status: 'Escalated', time: '6h 30m'},
-                {id: 'INV-SA-2023-04574', merchant: 'Regional Repair Co', province: 'North West', issue: 'Tax Calculation Error', validation: 'Partial', escalation: 'Tier 1', status: 'Resolved', time: '1h 05m'},
-                {id: 'INV-SA-2023-04575', merchant: 'MegaFix Solutions', province: 'Limpopo', issue: 'VAT Verification', validation: 'Failed', escalation: 'Tier 2', status: 'Pending', time: '3h 45m'},
-                {id: 'INV-SA-2023-04576', merchant: 'QuickRepair SA', province: 'Mpumalanga', issue: 'Service Code Error', validation: 'Partial', escalation: 'Tier 1', status: 'Resolved', time: '2h 15m'}
-            ];
-            
-            const tableBody = document.getElementById('disputesTable');
+
+        // Initialize department table
+        function initDepartmentTable() {
+            const tableBody = document.getElementById('departmentTable');
             tableBody.innerHTML = '';
-            
-            disputesData.forEach(dispute => {
-                // Determine status badge class
-                let statusClass = 'status-pending';
-                if (dispute.status === 'Resolved') statusClass = 'status-approved';
-                if (dispute.status === 'Escalated') statusClass = 'status-rejected';
-                
+
+            const serviceRequests = [
+                { id: "VH-2023-001", dept: "police", station: "Maponya SAPS", type: "Engine Repair", status: "In Progress", invoice: "Pending", updated: "15 min ago" },
+                { id: "VH-2023-002", dept: "police", station: "Pimville SAPS", type: "Brake Service", status: "Completed", invoice: "Approved", updated: "1 hour ago" },
+                { id: "VH-2023-003", dept: "health", station: "Matoks Hospital", type: "AC Repair", status: "Pending", invoice: "Validated", updated: "45 min ago" },
+                { id: "VH-2023-004", dept: "police", station: "Sunnyside SAPS", type: "Tire Replacement", status: "In Progress", invoice: "Processing", updated: "30 min ago" },
+                { id: "VH-2023-005", dept: "municipal", station: "JHB Metro", type: "Suspension", status: "Completed", invoice: "Paid", updated: "2 hours ago" },
+                { id: "VH-2023-006", dept: "health", station: "Bara Hospital", type: "Electrical", status: "Pending", invoice: "Disputed", updated: "1 hour ago" },
+                { id: "VH-2023-007", dept: "police", station: "Mabopane SAPS", type: "Oil Change", status: "Completed", invoice: "Approved", updated: "3 hours ago" },
+                { id: "VH-2023-008", dept: "municipal", station: "Tshwane Metro", type: "Transmission", status: "In Progress", invoice: "Pending", updated: "20 min ago" }
+            ];
+
+            serviceRequests.forEach(req => {
+                let deptClass = "dept-police";
+                if (req.dept === "health") deptClass = "dept-health";
+                if (req.dept === "municipal") deptClass = "dept-municipal";
+
+                let statusClass = "status-pending";
+                if (req.status === "Completed") statusClass = "status-approved";
+                if (req.status === "In Progress") statusClass = "status-pending";
+
+                let invoiceClass = "status-pending";
+                if (req.invoice === "Approved" || req.invoice === "Paid") invoiceClass = "status-approved";
+                if (req.invoice === "Disputed") invoiceClass = "status-rejected";
+
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><strong>${dispute.id}</strong></td>
-                    <td>${dispute.merchant}</td>
-                    <td>${dispute.province}</td>
-                    <td>${dispute.issue}</td>
-                    <td>${dispute.validation}</td>
-                    <td>${dispute.escalation}</td>
-                    <td><span class="status-badge ${statusClass}">${dispute.status}</span></td>
-                    <td>${dispute.time}</td>
+                    <td><strong>${req.id}</strong></td>
+                    <td><span class="dept-badge ${deptClass}">${departments[req.dept].name}</span></td>
+                    <td>${req.station}</td>
+                    <td>${req.type}</td>
+                    <td><span class="status-badge ${statusClass}">${req.status}</span></td>
+                    <td><span class="status-badge ${invoiceClass}">${req.invoice}</span></td>
+                    <td>${req.updated}</td>
                 `;
                 tableBody.appendChild(row);
             });
         }
-        
-        // Initialize event listeners for interactivity
+
+        // Event listeners
         function initEventListeners() {
             // Refresh button
             document.getElementById('refreshBtn').addEventListener('click', function() {
-                const btn = this;
-                btn.classList.add('spinning');
-                
-                // Simulate API call delay
+                this.classList.add('spinning');
                 setTimeout(() => {
                     refreshAllData();
-                    btn.classList.remove('spinning');
-                    showAlert('Dashboard data refreshed successfully', 'success');
+                    this.classList.remove('spinning');
+                    showAlert('Dashboard refreshed successfully', 'success');
                 }, 1000);
             });
-            
-            // Table refresh button
-            document.getElementById('refreshTable').addEventListener('click', function() {
-                initDataTable();
-                showAlert('Disputes table updated', 'info');
+
+            // Department tabs
+            document.querySelectorAll('.dept-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.dept-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    filterByDepartment(this.dataset.dept);
+                });
             });
-            
-            // Alert close button
+
+            // Report button
+            document.getElementById('reportBtn').addEventListener('click', function() {
+                document.getElementById('reportModal').style.display = 'flex';
+            });
+
+            document.getElementById('closeReport').addEventListener('click', function() {
+                document.getElementById('reportModal').style.display = 'none';
+            });
+
+            // Generate PDF
+            document.getElementById('generatePDF').addEventListener('click', function() {
+                this.classList.add('spinning');
+                setTimeout(() => {
+                    generatePerformanceReport();
+                    this.classList.remove('spinning');
+                    document.getElementById('reportModal').style.display = 'none';
+                    showAlert('Performance report generated successfully', 'success');
+                }, 1500);
+            });
+
+            // Alert close
             document.getElementById('closeAlert').addEventListener('click', function() {
                 document.getElementById('alertBanner').style.display = 'none';
             });
-            
-            // Navigation items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    // Remove active class from all items
-                    document.querySelectorAll('.nav-item').forEach(nav => {
-                        nav.classList.remove('active');
-                    });
-                    
-                    // Add active class to clicked item
-                    this.classList.add('active');
-                    
-                    // In a real app, this would load different dashboard views
-                    showAlert(`Switched to ${this.querySelector('span').textContent} view`, 'info');
-                });
-            });
-            
-            // Time filter
-            document.querySelector('.time-filter').addEventListener('click', function() {
-                showAlert('Time filter clicked - would open date picker in production', 'info');
+        }
+
+        // Filter by department
+        function filterByDepartment(dept) {
+            const rows = document.querySelectorAll('#departmentTable tr');
+            rows.forEach(row => {
+                if (dept === 'all') {
+                    row.style.display = '';
+                } else {
+                    const deptCell = row.querySelector('.dept-badge');
+                    if (deptCell) {
+                        const rowDept = deptCell.textContent.includes('SAPS') ? 'police' :
+                                      deptCell.textContent.includes('Health') ? 'health' :
+                                      deptCell.textContent.includes('Municipal') ? 'municipal' : '';
+                        row.style.display = rowDept === dept ? '' : 'none';
+                    }
+                }
             });
         }
-        
-        // Show alert banner with message
-        function showAlert(message, type = 'warning') {
-            const alertBanner = document.getElementById('alertBanner');
-            const alertMessage = document.getElementById('alertMessage');
-            
-            // Set message and color based on type
-            alertMessage.textContent = message;
-            
-            if (type === 'success') {
-                alertBanner.style.background = 'linear-gradient(90deg, #0e9f6e, #31c48d)';
-            } else if (type === 'info') {
-                alertBanner.style.background = 'linear-gradient(90deg, #007749, #00a86b)';
-            } else {
-                alertBanner.style.background = 'linear-gradient(90deg, #DE3831, #e74c3c)';
-            }
-            
-            alertBanner.style.display = 'flex';
-            
-            // Auto-hide after 5 seconds for non-warning alerts
-            if (type !== 'warning') {
-                setTimeout(() => {
-                    alertBanner.style.display = 'none';
-                }, 5000);
-            }
+
+        // Simulate 3CX integration
+        function simulate3CXIntegration() {
+            // Simulate live call data updates
+            setInterval(() => {
+                const activeCalls = Math.floor(Math.random() * 5) + 6;
+                const todayCalls = Math.floor(Math.random() * 50) + 120;
+                const avgWait = `${Math.floor(Math.random() * 2)}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`;
+                const abandonment = (Math.random() * 2 + 3).toFixed(1) + '%';
+                
+                document.getElementById('activeCalls').textContent = activeCalls;
+                document.getElementById('todayCalls').textContent = todayCalls;
+                document.getElementById('avgWaitTime').textContent = avgWait;
+                document.getElementById('callAbandonment').textContent = abandonment;
+                document.getElementById('liveCallsBadge').textContent = activeCalls;
+                
+                // Update agents status
+                const activeAgents = Math.floor(Math.random() * 4) + 8;
+                document.getElementById('activeAgents').textContent = `${activeAgents}/12`;
+                document.getElementById('callQueue').textContent = `${Math.floor(Math.random() * 6)} calls`;
+                
+                // Randomly show call alerts
+                if (Math.random() > 0.8) {
+                    const calls = ['New call from Sunnyside SAPS', 'Emergency vehicle service request', 'Priority call: Mabopane SAPS'];
+                    showAlert(calls[Math.floor(Math.random() * calls.length)], 'info');
+                }
+            }, 10000);
         }
-        
-        // Refresh all dashboard data
+
+        // Generate performance report
+        function generatePerformanceReport() {
+            const period = document.getElementById('reportPeriod').value;
+            const dept = document.getElementById('reportDept').value;
+            
+            const report = {
+                period: period,
+                department: dept,
+                timestamp: new Date().toLocaleString('en-ZA'),
+                metrics: {
+                    slaCompliance: Math.floor(Math.random() * 10) + 85,
+                    fcrRate: Math.floor(Math.random() * 10) + 80,
+                    autoValidation: Math.floor(Math.random() * 10) + 85,
+                    revenueProtected: `R ${(Math.random() * 100 + 500).toFixed(1)}K`
+                },
+                recommendations: [
+                    "Improve response time for SAPS vehicles in Soweto area",
+                    "Increase 3CX agent training for health department queries",
+                    "Implement mobile invoice validation for field technicians"
+                ]
+            };
+            
+            console.log('Performance Report Generated:', report);
+            // In production, this would generate an actual PDF/Excel file
+        }
+
+        // Refresh all data
         function refreshAllData() {
             initKPICards();
-            
-            // Update regional stats
-            updateRegionalStats();
+            initDepartmentTable();
             
             // Update charts with new data
-            if (window.dashboardCharts) {
-                // Update call centre chart
-                const callCenterData = window.dashboardCharts.callCenter.data.datasets[0].data;
-                callCenterData.forEach((value, index) => {
-                    // Add some random variation to simulate live data
-                    const variation = (Math.random() * 3 - 1.5);
-                    callCenterData[index] = Math.max(0, value + variation);
-                });
-                
-                // Update FCR data
-                const fcrData = window.dashboardCharts.callCenter.data.datasets[1].data;
-                fcrData.forEach((value, index) => {
-                    const variation = (Math.random() * 2 - 1);
-                    fcrData[index] = Math.min(100, Math.max(75, value + variation));
-                });
-                
-                window.dashboardCharts.callCenter.update();
-                
-                // Update validation chart
-                const validationData = window.dashboardCharts.validation.data.datasets[0].data;
-                validationData[0] = Math.min(100, Math.max(65, validationData[0] + (Math.random() * 4 - 2)));
-                validationData[1] = Math.min(30, Math.max(15, validationData[1] + (Math.random() * 3 - 1.5)));
-                validationData[2] = 100 - validationData[0] - validationData[1];
-                
-                window.dashboardCharts.validation.update();
+            if (window.callCenterChart) {
+                window.callCenterChart.data.datasets[0].data = window.callCenterChart.data.datasets[0].data.map(() => 
+                    Math.random() * 4 + 5
+                );
+                window.callCenterChart.data.datasets[1].data = window.callCenterChart.data.datasets[1].data.map(() => 
+                    Math.random() * 10 + 80
+                );
+                window.callCenterChart.update();
             }
             
-            // Refresh table
-            initDataTable();
+            if (window.departmentChart) {
+                window.departmentChart.data.datasets[0].data = [
+                    Math.random() * 10 + 85,
+                    Math.random() * 10 + 80,
+                    Math.random() * 10 + 83,
+                    Math.random() * 10 + 78
+                ];
+                window.departmentChart.update();
+            }
         }
-        
-        // Update regional statistics
-        function updateRegionalStats() {
-            const regions = ['Gauteng', 'Western Cape', 'KwaZulu-Natal', 'Eastern Cape'];
-            const regionCards = document.querySelectorAll('.region-card .region-metric');
+
+        // Show alerts
+        function showAlert(message, type = 'warning') {
+            const banner = document.getElementById('alertBanner');
+            const messageEl = document.getElementById('alertMessage');
             
-            regionCards.forEach((card, index) => {
-                const baseRate = [94.2, 91.8, 88.5, 86.3][index];
-                const variation = (Math.random() * 3 - 1.5);
-                const newRate = Math.min(100, Math.max(80, baseRate + variation)).toFixed(1);
-                card.textContent = newRate + '%';
-            });
+            messageEl.textContent = message;
+            
+            if (type === 'success') {
+                banner.style.background = 'linear-gradient(90deg, #0e9f6e, #31c48d)';
+            } else if (type === 'info') {
+                banner.style.background = 'linear-gradient(90deg, #007749, #00a86b)';
+            } else {
+                banner.style.background = 'linear-gradient(90deg, #DE3831, #e74c3c)';
+            }
+            
+            banner.style.display = 'flex';
+            setTimeout(() => {
+                if (type !== 'warning') banner.style.display = 'none';
+            }, 5000);
         }
-        
-        // Simulate real-time updates
+
+        // Live updates
         function startLiveUpdates() {
-            // Update KPIs every 30 seconds
             setInterval(() => {
-                // Only update if not in the middle of a manual refresh
                 if (!document.getElementById('refreshBtn').classList.contains('spinning')) {
-                    // Randomly update one KPI to simulate live changes
+                    // Random KPI updates
                     const kpis = ['slaTime', 'fcrRate', 'autoValidated', 'revenueSaved'];
                     const randomKpi = kpis[Math.floor(Math.random() * kpis.length)];
-                    const kpiElement = document.getElementById(randomKpi);
+                    const element = document.getElementById(randomKpi);
                     
                     if (randomKpi === 'slaTime') {
                         const newValue = (Math.random() * 4 + 14).toFixed(1) + " min";
-                        kpiElement.textContent = newValue;
+                        element.textContent = newValue;
                         
-                        // Update SLA alert status
                         const slaCard = document.getElementById('slaCard');
                         if (parseFloat(newValue) > 15) {
                             slaCard.classList.add('alert');
-                            if (Math.random() > 0.7) {
-                                showAlert(`SLA Alert: Approval response time (${newValue}) exceeds 15-minute SLA`, 'warning');
-                            }
                         } else {
                             slaCard.classList.remove('alert');
                         }
                     } else if (randomKpi === 'fcrRate') {
-                        const newValue = (Math.random() * 6 + 84).toFixed(1) + "%";
-                        kpiElement.textContent = newValue;
+                        element.textContent = (Math.random() * 6 + 84).toFixed(1) + "%";
                     } else if (randomKpi === 'autoValidated') {
-                        const newValue = (Math.random() * 5 + 89).toFixed(1) + "%";
-                        kpiElement.textContent = newValue;
+                        element.textContent = (Math.random() * 5 + 89).toFixed(1) + "%";
                     } else if (randomKpi === 'revenueSaved') {
-                        const newValue = "R " + (Math.random() * 200 + 500).toFixed(1) + "K";
-                        kpiElement.textContent = newValue;
-                    }
-                    
-                    // Occasionally update regional stats
-                    if (Math.random() > 0.8) {
-                        updateRegionalStats();
+                        element.textContent = "R " + (Math.random() * 200 + 500).toFixed(1) + "K";
                     }
                 }
             }, 30000);
-            
-            // Simulate new dispute alert every 2-5 minutes
-            setInterval(() => {
-                if (Math.random() > 0.7) { // 30% chance
-                    const provinces = ['Gauteng', 'Western Cape', 'KwaZulu-Natal', 'Eastern Cape', 'North West', 'Limpopo'];
-                    const issues = ['Part Number Mismatch', 'Rate Card Variance', 'Job Card Missing', 'Duplicate Invoice', 'VAT Verification', 'Service Code Error'];
-                    const randomProvince = provinces[Math.floor(Math.random() * provinces.length)];
-                    const randomIssue = issues[Math.floor(Math.random() * issues.length)];
-                    showAlert(`New dispute detected in ${randomProvince}: ${randomIssue}. Assigned to Tier ${Math.floor(Math.random() * 3) + 1}`, 'warning');
-                }
-            }, 120000);
-            
-            // Simulate periodic map updates
-            setInterval(() => {
-                if (window.jobDistributionMap && Math.random() > 0.8) {
-                    // In a real app, this would update map markers with fresh data
-                    console.log('Map data would be refreshed from API');
-                }
-            }, 60000);
+        }
+
+        // 3CX Integration Functions (Example)
+        function connectTo3CX() {
+            // Example WebSocket connection to 3CX
+            /*
+            const socket = new WebSocket('wss://your-3cx-server:5001');
+            socket.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                updateCallCenterDisplay(data);
+            };
+            */
+            console.log('3CX integration would connect here');
+        }
+
+        function updateCallCenterDisplay(data) {
+            // Update UI with real 3CX data
+            document.getElementById('activeCalls').textContent = data.activeCalls;
+            document.getElementById('todayCalls').textContent = data.todayCalls;
+            document.getElementById('avgWaitTime').textContent = data.avgWaitTime;
+            document.getElementById('callAbandonment').textContent = data.abandonmentRate;
         }
     </script>
 </body>
