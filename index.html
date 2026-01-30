@@ -25,6 +25,8 @@
             --gray-700: #374151;
             --gray-900: #111827;
             --sa-blue: #002395; /* South African blue */
+            --offline-gray: #6c757d;
+            --sync-blue: #1a56db;
         }
         
         * {
@@ -572,6 +574,297 @@
             border-bottom: 2px solid var(--gray-200);
         }
         
+        /* OFFLINE MODE STYLES */
+        .offline-banner {
+            background: linear-gradient(90deg, #ff9800, #ffb74d);
+            color: #333;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: pulseWarning 2s infinite;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        @keyframes pulseWarning {
+            0% { box-shadow: 0 4px 6px rgba(255, 152, 0, 0.2); }
+            50% { box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4); }
+            100% { box-shadow: 0 4px 6px rgba(255, 152, 0, 0.2); }
+        }
+        
+        .offline-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .offline-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .offline-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .offline-btn.sync {
+            background: var(--sync-blue);
+            color: white;
+        }
+        
+        .offline-btn.manual {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        /* Data Sync Modal */
+        .sync-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sync-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 12px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .sync-header {
+            background: var(--sync-blue);
+            color: white;
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .sync-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+        
+        .sync-tab {
+            padding: 15px 20px;
+            border: none;
+            background: none;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .sync-tab.active {
+            border-bottom: 3px solid var(--sync-blue);
+            color: var(--sync-blue);
+        }
+        
+        .sync-body {
+            padding: 20px;
+        }
+        
+        .sync-section {
+            display: none;
+        }
+        
+        .sync-section.active {
+            display: block;
+        }
+        
+        /* Manual Entry Form */
+        .manual-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Pending Sync Table */
+        .pending-sync-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .pending-sync-table th {
+            background: #f3f4f6;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .pending-sync-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .sync-status {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .sync-pending { background: #fef3c7; color: #92400e; }
+        .sync-success { background: #d1fae5; color: #065f46; }
+        .sync-failed { background: #fee2e2; color: #991b1b; }
+        
+        /* Offline Data Indicator */
+        .offline-data-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--sync-blue);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            z-index: 1000;
+        }
+        
+        /* Storage Status */
+        .storage-status {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #f3f4f6;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Data Sync Progress */
+        .sync-progress {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--sync-blue);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        /* System Status Indicator */
+        .system-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-online { background: #d1fae5; color: #065f46; }
+        .status-offline { background: #fee2e2; color: #991b1b; }
+        .status-syncing { background: #dbeafe; color: #1e40af; }
+        
+        /* Batch Operations */
+        .batch-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .batch-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .batch-btn.primary {
+            background: var(--sync-blue);
+            color: white;
+            border-color: var(--sync-blue);
+        }
+        
+        /* Conflict Resolution */
+        .conflict-item {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .conflict-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
         /* Responsive */
         @media (max-width: 1200px) {
             .charts-grid {
@@ -607,6 +900,10 @@
             .live-call-stats {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .manual-form {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 480px) {
@@ -617,10 +914,44 @@
             .department-tabs {
                 flex-direction: column;
             }
+            
+            .offline-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Offline Mode Banner -->
+    <div class="offline-banner" id="offlineBanner" style="display: none;">
+        <div class="offline-content">
+            <i class="fas fa-wifi-slash"></i>
+            <div>
+                <strong>System is Offline</strong>
+                <div style="font-size: 14px;">Working in offline mode. Data will sync when connection is restored.</div>
+            </div>
+        </div>
+        <div class="offline-actions">
+            <button class="offline-btn manual" id="manualEntryBtn">
+                <i class="fas fa-pen"></i> Manual Entry
+            </button>
+            <button class="offline-btn sync" id="syncNowBtn">
+                <i class="fas fa-sync"></i> Sync Now
+            </button>
+        </div>
+    </div>
+
+    <!-- Offline Data Indicator -->
+    <div class="offline-data-indicator" id="offlineDataIndicator" style="display: none;">
+        <i class="fas fa-database"></i>
+        <span id="pendingCount">0</span> pending sync
+    </div>
+
+    <!-- Storage Status -->
+    <div class="storage-status" id="storageStatus">
+        <i class="fas fa-hdd"></i> Local Storage: <span id="storageUsed">0KB</span>
+    </div>
+
     <div class="dashboard-container">
         <!-- Sidebar Navigation -->
         <nav class="sidebar">
@@ -865,552 +1196,1286 @@
                         </div>
                         <div class="legend-item">
                             <div class="legend-color" style="background-color: var(--health-green);"></div>
-                            <span>Health Dept</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background-color: var(--municipal-orange);"></div>
-                            <span>Municipal</span>
+                                <span>Health Dept</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: var(--municipal-orange);"></div>
+                                <span>Municipal</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div id="jobDistributionMap"></div>
-            </section>
+                    <div id="jobDistributionMap"></div>
+                </section>
 
-            <!-- SAPS/Department Table -->
-            <section class="department-table-container">
-                <div class="table-header">
-                    <div class="chart-title">Active Service Requests by SAPS Station & Department</div>
-                    <button class="refresh-btn" id="refreshTable">
-                        <i class="fas fa-sync-alt"></i>
-                        <span>Refresh</span>
-                    </button>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Vehicle ID</th>
-                            <th>Department</th>
-                            <th>SAPS Station/Area</th>
-                            <th>Service Type</th>
-                            <th>Status</th>
-                            <th>Invoice Status</th>
-                            <th>Last Updated</th>
-                        </tr>
-                    </thead>
-                    <tbody id="departmentTable">
-                        <!-- Data populated by JavaScript -->
-                    </tbody>
-                </table>
-            </section>
-        </main>
-    </div>
-
-    <!-- Report Modal -->
-    <div class="report-modal" id="reportModal">
-        <div class="report-content">
-            <div class="report-header">
-                <h2><i class="fas fa-file-pdf"></i> Performance Report Generator</h2>
-                <button class="alert-close" id="closeReport">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="report-body">
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Report Period:</label>
-                    <select id="reportPeriod" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--gray-200);">
-                        <option value="daily">Daily Report (Today)</option>
-                        <option value="weekly">Weekly Report (This Week)</option>
-                        <option value="monthly">Monthly Report (This Month)</option>
-                        <option value="custom">Custom Range</option>
-                    </select>
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Department:</label>
-                    <select id="reportDept" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--gray-200);">
-                        <option value="all">All Departments</option>
-                        <option value="police">SAPS Vehicles</option>
-                        <option value="health">Health Department</option>
-                        <option value="municipal">Municipal Services</option>
-                    </select>
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Include:</label>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-                        <label><input type="checkbox" checked> Call Centre Metrics</label>
-                        <label><input type="checkbox" checked> Invoice Validation</label>
-                        <label><input type="checkbox" checked> Department Performance</label>
-                        <label><input type="checkbox" checked> Financial Summary</label>
-                        <label><input type="checkbox" checked> SLA Compliance</label>
-                        <label><input type="checkbox" checked> Recommendations</label>
+                <!-- SAPS/Department Table -->
+                <section class="department-table-container">
+                    <div class="table-header">
+                        <div class="chart-title">Active Service Requests by SAPS Station & Department</div>
+                        <button class="refresh-btn" id="refreshTable">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Refresh</span>
+                        </button>
                     </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vehicle ID</th>
+                                <th>Department</th>
+                                <th>SAPS Station/Area</th>
+                                <th>Service Type</th>
+                                <th>Status</th>
+                                <th>Invoice Status</th>
+                                <th>Last Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody id="departmentTable">
+                            <!-- Data populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+            </main>
+        </div>
+
+        <!-- Data Sync Modal -->
+        <div class="sync-modal" id="syncModal">
+            <div class="sync-content">
+                <div class="sync-header">
+                    <h3><i class="fas fa-sync-alt"></i> Data Synchronization</h3>
+                    <button class="alert-close" id="closeSync">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 30px;">
-                    <button class="report-btn" id="generatePDF" style="flex: 1;">
-                        <i class="fas fa-file-pdf"></i> Generate PDF
-                    </button>
-                    <button class="refresh-btn" id="generateExcel" style="flex: 1;">
-                        <i class="fas fa-file-excel"></i> Export Excel
-                    </button>
+                
+                <div class="sync-tabs">
+                    <button class="sync-tab active" data-tab="manual">Manual Entry</button>
+                    <button class="sync-tab" data-tab="pending">Pending Sync (<span id="pendingTabCount">0</span>)</button>
+                    <button class="sync-tab" data-tab="batch">Batch Operations</button>
+                    <button class="sync-tab" data-tab="history">Sync History</button>
+                </div>
+                
+                <div class="sync-body">
+                    <!-- Manual Entry Tab -->
+                    <div class="sync-section active" id="tab-manual">
+                        <h4>Enter Offline Data</h4>
+                        <form id="manualEntryForm" class="manual-form">
+                            <div class="form-group">
+                                <label class="form-label">Department *</label>
+                                <select class="form-select" id="entryDept" required>
+                                    <option value="">Select Department</option>
+                                    <option value="police">SAPS Vehicles</option>
+                                    <option value="health">Health Department</option>
+                                    <option value="municipal">Municipal Services</option>
+                                    <option value="emergency">Emergency Services</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">SAPS Station/Area *</label>
+                                <select class="form-select" id="entryStation" required>
+                                    <option value="">Select Station</option>
+                                    <option value="Maponya SAPS">Soweto - Maponya SAPS</option>
+                                    <option value="Pimville SAPS">Soweto - Pimville SAPS</option>
+                                    <option value="Sunnyside SAPS">Pretoria - Sunnyside SAPS</option>
+                                    <option value="Mabopane SAPS">Mabopane SAPS</option>
+                                    <option value="Matoks Hospital">Limpopo - Matoks Hospital</option>
+                                    <option value="JHB Metro">Johannesburg Metro</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Vehicle ID *</label>
+                                <input type="text" class="form-input" id="entryVehicleId" 
+                                       placeholder="e.g., VH-2023-001" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Service Type *</label>
+                                <select class="form-select" id="entryServiceType" required>
+                                    <option value="">Select Service</option>
+                                    <option value="Engine Repair">Engine Repair</option>
+                                    <option value="Brake Service">Brake Service</option>
+                                    <option value="AC Repair">AC Repair</option>
+                                    <option value="Tire Replacement">Tire Replacement</option>
+                                    <option value="Suspension">Suspension</option>
+                                    <option value="Electrical">Electrical</option>
+                                    <option value="Oil Change">Oil Change</option>
+                                    <option value="Transmission">Transmission</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Invoice Amount (ZAR)</label>
+                                <input type="number" class="form-input" id="entryAmount" 
+                                       placeholder="0.00" step="0.01">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Technician Name</label>
+                                <input type="text" class="form-input" id="entryTechnician" 
+                                       placeholder="Technician name">
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label class="form-label">Service Notes</label>
+                                <textarea class="form-textarea" id="entryNotes" 
+                                         placeholder="Details of service performed, parts used, etc."></textarea>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label class="form-label">Attach Photos (Max 3)</label>
+                                <input type="file" class="form-input" id="entryPhotos" 
+                                       accept="image/*" multiple>
+                                <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">
+                                    Photos will be stored locally and uploaded when syncing
+                                </div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <button type="submit" class="offline-btn sync" style="width: 100%;">
+                                    <i class="fas fa-save"></i> Save Locally
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Pending Sync Tab -->
+                    <div class="sync-section" id="tab-pending">
+                        <h4>Pending Synchronization</h4>
+                        <div style="margin-bottom: 15px;">
+                            <button class="batch-btn primary" id="syncAllBtn">
+                                <i class="fas fa-sync-alt"></i> Sync All Now
+                            </button>
+                            <button class="batch-btn" id="clearPendingBtn">
+                                <i class="fas fa-trash"></i> Clear All
+                            </button>
+                        </div>
+                        
+                        <table class="pending-sync-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Vehicle ID</th>
+                                    <th>Station</th>
+                                    <th>Service Type</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingSyncTable">
+                                <!-- Filled by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Batch Operations Tab -->
+                    <div class="sync-section" id="tab-batch">
+                        <h4>Batch Operations</h4>
+                        <div class="batch-actions">
+                            <button class="batch-btn primary" id="importCSVBtn">
+                                <i class="fas fa-file-import"></i> Import CSV
+                            </button>
+                            <button class="batch-btn" id="exportPendingBtn">
+                                <i class="fas fa-file-export"></i> Export Pending
+                            </button>
+                            <button class="batch-btn" id="backupDataBtn">
+                                <i class="fas fa-download"></i> Backup Data
+                            </button>
+                            <button class="batch-btn" id="restoreBackupBtn">
+                                <i class="fas fa-upload"></i> Restore Backup
+                            </button>
+                        </div>
+                        
+                        <div class="sync-progress">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Batch Progress</span>
+                                <span id="batchProgressText">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="batchProgressBar"></div>
+                            </div>
+                            <div id="batchStatus">Ready for batch operations</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sync History Tab -->
+                    <div class="sync-section" id="tab-history">
+                        <h4>Sync History</h4>
+                        <table class="pending-sync-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Operation</th>
+                                    <th>Items</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="syncHistoryTable">
+                                <!-- Filled by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        // South African Departments and SAPS Stations
-        const departments = {
-            police: {
-                name: "SAPS Vehicles",
-                color: "#1a237e",
-                stations: [
-                    { name: "Soweto - Maponya SAPS", vehicles: 12, active: 8 },
-                    { name: "Soweto - Pimville SAPS", vehicles: 8, active: 5 },
-                    { name: "Pretoria - Sunnyside SAPS", vehicles: 15, active: 10 },
-                    { name: "Mabopane SAPS", vehicles: 10, active: 7 },
-                    { name: "Johannesburg Central", vehicles: 20, active: 14 },
-                    { name: "Sandton SAPS", vehicles: 12, active: 9 }
-                ]
-            },
-            health: {
-                name: "Health Department",
-                color: "#2e7d32",
-                stations: [
-                    { name: "Limpopo - Matoks Hospital", vehicles: 8, active: 6 },
-                    { name: "Chris Hani Baragwanath", vehicles: 15, active: 11 },
-                    { name: "Steve Biko Hospital", vehicles: 10, active: 8 },
-                    { name: "Tygerberg Hospital", vehicles: 12, active: 9 }
-                ]
-            },
-            municipal: {
-                name: "Municipal Services",
-                color: "#ef6c00",
-                stations: [
-                    { name: "Johannesburg Metro", vehicles: 25, active: 18 },
-                    { name: "Tshwane Metro", vehicles: 20, active: 15 },
-                    { name: "Ekurhuleni Metro", vehicles: 18, active: 13 }
-                ]
-            }
-        };
+        <!-- Report Modal -->
+        <div class="report-modal" id="reportModal">
+            <div class="report-content">
+                <div class="report-header">
+                    <h2><i class="fas fa-file-pdf"></i> Performance Report Generator</h2>
+                    <button class="alert-close" id="closeReport">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="report-body">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Report Period:</label>
+                        <select id="reportPeriod" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--gray-200);">
+                            <option value="daily">Daily Report (Today)</option>
+                            <option value="weekly">Weekly Report (This Week)</option>
+                            <option value="monthly">Monthly Report (This Month)</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Department:</label>
+                        <select id="reportDept" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--gray-200);">
+                            <option value="all">All Departments</option>
+                            <option value="police">SAPS Vehicles</option>
+                            <option value="health">Health Department</option>
+                            <option value="municipal">Municipal Services</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Include:</label>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                            <label><input type="checkbox" checked> Call Centre Metrics</label>
+                            <label><input type="checkbox" checked> Invoice Validation</label>
+                            <label><input type="checkbox" checked> Department Performance</label>
+                            <label><input type="checkbox" checked> Financial Summary</label>
+                            <label><input type="checkbox" checked> SLA Compliance</label>
+                            <label><input type="checkbox" checked> Recommendations</label>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 30px;">
+                        <button class="report-btn" id="generatePDF" style="flex: 1;">
+                            <i class="fas fa-file-pdf"></i> Generate PDF
+                        </button>
+                        <button class="refresh-btn" id="generateExcel" style="flex: 1;">
+                            <i class="fas fa-file-excel"></i> Export Excel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        // Initialize the dashboard
-        document.addEventListener('DOMContentLoaded', function() {
-            initKPICards();
-            initCharts();
-            initMap();
-            initDepartmentTable();
-            initEventListeners();
-            startLiveUpdates();
-            simulate3CXIntegration();
-        });
-
-        // Initialize KPI cards with dynamic data
-        function initKPICards() {
-            const kpiData = {
-                slaTime: (Math.random() * 4 + 14).toFixed(1) + " min",
-                fcrRate: (Math.random() * 6 + 84).toFixed(1) + "%",
-                autoValidated: (Math.random() * 5 + 89).toFixed(1) + "%",
-                revenueSaved: "R " + (Math.random() * 200 + 500).toFixed(1) + "K"
-            };
-            
-            document.getElementById('slaTime').textContent = kpiData.slaTime;
-            document.getElementById('fcrRate').textContent = kpiData.fcrRate;
-            document.getElementById('autoValidated').textContent = kpiData.autoValidated;
-            document.getElementById('revenueSaved').textContent = kpiData.revenueSaved;
-            
-            const slaValue = parseFloat(kpiData.slaTime);
-            const slaCard = document.getElementById('slaCard');
-            if (slaValue > 15) {
-                slaCard.classList.add('alert');
-            } else {
-                slaCard.classList.remove('alert');
-            }
-        }
-
-        // Initialize charts
-        function initCharts() {
-            // Call Centre Performance Chart
-            const callCenterCtx = document.getElementById('callCenterChart').getContext('2d');
-            window.callCenterChart = new Chart(callCenterCtx, {
-                type: 'line',
-                data: {
-                    labels: ['06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00'],
-                    datasets: [
-                        {
-                            label: 'Abandoned Calls',
-                            data: [6.2, 8.1, 7.3, 5.9, 9.2, 6.8, 4.5],
-                            borderColor: 'rgba(0, 119, 73, 1)',
-                            backgroundColor: 'rgba(0, 119, 73, 0.1)',
-                            borderWidth: 3,
-                            fill: true,
-                            tension: 0.4
-                        },
-                        {
-                            label: 'FCR Rate',
-                            data: [85, 82, 87, 89, 84, 88, 91],
-                            borderColor: 'rgba(14, 159, 110, 1)',
-                            backgroundColor: 'rgba(14, 159, 110, 0.1)',
-                            borderWidth: 3,
-                            fill: true,
-                            tension: 0.4
-                        }
+        <script>
+            // ================= DASHBOARD SCRIPT =================
+            // South African Departments and SAPS Stations
+            const departments = {
+                police: {
+                    name: "SAPS Vehicles",
+                    color: "#1a237e",
+                    stations: [
+                        { name: "Soweto - Maponya SAPS", vehicles: 12, active: 8 },
+                        { name: "Soweto - Pimville SAPS", vehicles: 8, active: 5 },
+                        { name: "Pretoria - Sunnyside SAPS", vehicles: 15, active: 10 },
+                        { name: "Mabopane SAPS", vehicles: 10, active: 7 },
+                        { name: "Johannesburg Central", vehicles: 20, active: 14 },
+                        { name: "Sandton SAPS", vehicles: 12, active: 9 }
                     ]
                 },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
-                            ticks: { callback: value => value + '%' }
-                        },
-                        x: { grid: { color: 'rgba(0, 0, 0, 0.05)' } }
-                    }
-                }
-            });
-
-            // Department Performance Chart
-            const deptCtx = document.getElementById('departmentChart').getContext('2d');
-            window.departmentChart = new Chart(deptCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['SAPS', 'Health', 'Municipal', 'Emergency'],
-                    datasets: [{
-                        label: 'Service Completion %',
-                        data: [94, 88, 91, 86],
-                        backgroundColor: [
-                            'rgba(26, 35, 126, 0.8)',
-                            'rgba(46, 125, 50, 0.8)',
-                            'rgba(239, 108, 0, 0.8)',
-                            'rgba(222, 56, 49, 0.8)'
-                        ],
-                        borderColor: [
-                            'rgb(26, 35, 126)',
-                            'rgb(46, 125, 50)',
-                            'rgb(239, 108, 0)',
-                            'rgb(222, 56, 49)'
-                        ],
-                        borderWidth: 1
-                    }]
+                health: {
+                    name: "Health Department",
+                    color: "#2e7d32",
+                    stations: [
+                        { name: "Limpopo - Matoks Hospital", vehicles: 8, active: 6 },
+                        { name: "Chris Hani Baragwanath", vehicles: 15, active: 11 },
+                        { name: "Steve Biko Hospital", vehicles: 10, active: 8 },
+                        { name: "Tygerberg Hospital", vehicles: 12, active: 9 }
+                    ]
                 },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: { callback: value => value + '%' }
-                        }
-                    }
+                municipal: {
+                    name: "Municipal Services",
+                    color: "#ef6c00",
+                    stations: [
+                        { name: "Johannesburg Metro", vehicles: 25, active: 18 },
+                        { name: "Tshwane Metro", vehicles: 20, active: 15 },
+                        { name: "Ekurhuleni Metro", vehicles: 18, active: 13 }
+                    ]
                 }
-            });
-        }
-
-        // Initialize map with SAPS stations
-        function initMap() {
-            const map = L.map('jobDistributionMap').setView([-26.2041, 28.0473], 10);
-            
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
-
-            // SAPS Stations in Gauteng
-            const sapsStations = [
-                {lat: -26.2675, lng: 27.8587, name: "Maponya SAPS", dept: "police", vehicles: 12},
-                {lat: -26.2456, lng: 27.8512, name: "Pimville SAPS", dept: "police", vehicles: 8},
-                {lat: -25.7547, lng: 28.2187, name: "Sunnyside SAPS", dept: "police", vehicles: 15},
-                {lat: -25.5083, lng: 28.1000, name: "Mabopane SAPS", dept: "police", vehicles: 10},
-                {lat: -26.2041, lng: 28.0473, name: "JHB Central SAPS", dept: "police", vehicles: 20},
-                {lat: -26.1076, lng: 28.0567, name: "Sandton SAPS", dept: "police", vehicles: 12},
-                {lat: -25.7598, lng: 28.1994, name: "Steve Biko Hospital", dept: "health", vehicles: 10},
-                {lat: -26.1629, lng: 27.9867, name: "Bara Hospital", dept: "health", vehicles: 15},
-                {lat: -26.1076, lng: 28.0567, name: "JHB Metro", dept: "municipal", vehicles: 25},
-                {lat: -25.7547, lng: 28.2187, name: "Tshwane Metro", dept: "municipal", vehicles: 20}
-            ];
-
-            sapsStations.forEach(station => {
-                let color;
-                if (station.dept === "police") color = "#1a237e";
-                else if (station.dept === "health") color = "#2e7d32";
-                else color = "#ef6c00";
-
-                L.circleMarker([station.lat, station.lng], {
-                    radius: Math.sqrt(station.vehicles) * 2,
-                    fillColor: color,
-                    color: '#111827',
-                    weight: 1,
-                    fillOpacity: 0.7
-                }).addTo(map).bindPopup(`
-                    <strong>${station.name}</strong><br>
-                    Department: ${departments[station.dept].name}<br>
-                    Total Vehicles: ${station.vehicles}<br>
-                    Active Now: ${Math.floor(station.vehicles * 0.7)}
-                `);
-            });
-            
-            window.jobDistributionMap = map;
-        }
-
-        // Initialize department table
-        function initDepartmentTable() {
-            const tableBody = document.getElementById('departmentTable');
-            tableBody.innerHTML = '';
-
-            const serviceRequests = [
-                { id: "VH-2023-001", dept: "police", station: "Maponya SAPS", type: "Engine Repair", status: "In Progress", invoice: "Pending", updated: "15 min ago" },
-                { id: "VH-2023-002", dept: "police", station: "Pimville SAPS", type: "Brake Service", status: "Completed", invoice: "Approved", updated: "1 hour ago" },
-                { id: "VH-2023-003", dept: "health", station: "Matoks Hospital", type: "AC Repair", status: "Pending", invoice: "Validated", updated: "45 min ago" },
-                { id: "VH-2023-004", dept: "police", station: "Sunnyside SAPS", type: "Tire Replacement", status: "In Progress", invoice: "Processing", updated: "30 min ago" },
-                { id: "VH-2023-005", dept: "municipal", station: "JHB Metro", type: "Suspension", status: "Completed", invoice: "Paid", updated: "2 hours ago" },
-                { id: "VH-2023-006", dept: "health", station: "Bara Hospital", type: "Electrical", status: "Pending", invoice: "Disputed", updated: "1 hour ago" },
-                { id: "VH-2023-007", dept: "police", station: "Mabopane SAPS", type: "Oil Change", status: "Completed", invoice: "Approved", updated: "3 hours ago" },
-                { id: "VH-2023-008", dept: "municipal", station: "Tshwane Metro", type: "Transmission", status: "In Progress", invoice: "Pending", updated: "20 min ago" }
-            ];
-
-            serviceRequests.forEach(req => {
-                let deptClass = "dept-police";
-                if (req.dept === "health") deptClass = "dept-health";
-                if (req.dept === "municipal") deptClass = "dept-municipal";
-
-                let statusClass = "status-pending";
-                if (req.status === "Completed") statusClass = "status-approved";
-                if (req.status === "In Progress") statusClass = "status-pending";
-
-                let invoiceClass = "status-pending";
-                if (req.invoice === "Approved" || req.invoice === "Paid") invoiceClass = "status-approved";
-                if (req.invoice === "Disputed") invoiceClass = "status-rejected";
-
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><strong>${req.id}</strong></td>
-                    <td><span class="dept-badge ${deptClass}">${departments[req.dept].name}</span></td>
-                    <td>${req.station}</td>
-                    <td>${req.type}</td>
-                    <td><span class="status-badge ${statusClass}">${req.status}</span></td>
-                    <td><span class="status-badge ${invoiceClass}">${req.invoice}</span></td>
-                    <td>${req.updated}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Event listeners
-        function initEventListeners() {
-            // Refresh button
-            document.getElementById('refreshBtn').addEventListener('click', function() {
-                this.classList.add('spinning');
-                setTimeout(() => {
-                    refreshAllData();
-                    this.classList.remove('spinning');
-                    showAlert('Dashboard refreshed successfully', 'success');
-                }, 1000);
-            });
-
-            // Department tabs
-            document.querySelectorAll('.dept-tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    document.querySelectorAll('.dept-tab').forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    filterByDepartment(this.dataset.dept);
-                });
-            });
-
-            // Report button
-            document.getElementById('reportBtn').addEventListener('click', function() {
-                document.getElementById('reportModal').style.display = 'flex';
-            });
-
-            document.getElementById('closeReport').addEventListener('click', function() {
-                document.getElementById('reportModal').style.display = 'none';
-            });
-
-            // Generate PDF
-            document.getElementById('generatePDF').addEventListener('click', function() {
-                this.classList.add('spinning');
-                setTimeout(() => {
-                    generatePerformanceReport();
-                    this.classList.remove('spinning');
-                    document.getElementById('reportModal').style.display = 'none';
-                    showAlert('Performance report generated successfully', 'success');
-                }, 1500);
-            });
-
-            // Alert close
-            document.getElementById('closeAlert').addEventListener('click', function() {
-                document.getElementById('alertBanner').style.display = 'none';
-            });
-        }
-
-        // Filter by department
-        function filterByDepartment(dept) {
-            const rows = document.querySelectorAll('#departmentTable tr');
-            rows.forEach(row => {
-                if (dept === 'all') {
-                    row.style.display = '';
-                } else {
-                    const deptCell = row.querySelector('.dept-badge');
-                    if (deptCell) {
-                        const rowDept = deptCell.textContent.includes('SAPS') ? 'police' :
-                                      deptCell.textContent.includes('Health') ? 'health' :
-                                      deptCell.textContent.includes('Municipal') ? 'municipal' : '';
-                        row.style.display = rowDept === dept ? '' : 'none';
-                    }
-                }
-            });
-        }
-
-        // Simulate 3CX integration
-        function simulate3CXIntegration() {
-            // Simulate live call data updates
-            setInterval(() => {
-                const activeCalls = Math.floor(Math.random() * 5) + 6;
-                const todayCalls = Math.floor(Math.random() * 50) + 120;
-                const avgWait = `${Math.floor(Math.random() * 2)}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`;
-                const abandonment = (Math.random() * 2 + 3).toFixed(1) + '%';
-                
-                document.getElementById('activeCalls').textContent = activeCalls;
-                document.getElementById('todayCalls').textContent = todayCalls;
-                document.getElementById('avgWaitTime').textContent = avgWait;
-                document.getElementById('callAbandonment').textContent = abandonment;
-                document.getElementById('liveCallsBadge').textContent = activeCalls;
-                
-                // Update agents status
-                const activeAgents = Math.floor(Math.random() * 4) + 8;
-                document.getElementById('activeAgents').textContent = `${activeAgents}/12`;
-                document.getElementById('callQueue').textContent = `${Math.floor(Math.random() * 6)} calls`;
-                
-                // Randomly show call alerts
-                if (Math.random() > 0.8) {
-                    const calls = ['New call from Sunnyside SAPS', 'Emergency vehicle service request', 'Priority call: Mabopane SAPS'];
-                    showAlert(calls[Math.floor(Math.random() * calls.length)], 'info');
-                }
-            }, 10000);
-        }
-
-        // Generate performance report
-        function generatePerformanceReport() {
-            const period = document.getElementById('reportPeriod').value;
-            const dept = document.getElementById('reportDept').value;
-            
-            const report = {
-                period: period,
-                department: dept,
-                timestamp: new Date().toLocaleString('en-ZA'),
-                metrics: {
-                    slaCompliance: Math.floor(Math.random() * 10) + 85,
-                    fcrRate: Math.floor(Math.random() * 10) + 80,
-                    autoValidation: Math.floor(Math.random() * 10) + 85,
-                    revenueProtected: `R ${(Math.random() * 100 + 500).toFixed(1)}K`
-                },
-                recommendations: [
-                    "Improve response time for SAPS vehicles in Soweto area",
-                    "Increase 3CX agent training for health department queries",
-                    "Implement mobile invoice validation for field technicians"
-                ]
             };
-            
-            console.log('Performance Report Generated:', report);
-            // In production, this would generate an actual PDF/Excel file
-        }
 
-        // Refresh all data
-        function refreshAllData() {
-            initKPICards();
-            initDepartmentTable();
-            
-            // Update charts with new data
-            if (window.callCenterChart) {
-                window.callCenterChart.data.datasets[0].data = window.callCenterChart.data.datasets[0].data.map(() => 
-                    Math.random() * 4 + 5
-                );
-                window.callCenterChart.data.datasets[1].data = window.callCenterChart.data.datasets[1].data.map(() => 
-                    Math.random() * 10 + 80
-                );
-                window.callCenterChart.update();
-            }
-            
-            if (window.departmentChart) {
-                window.departmentChart.data.datasets[0].data = [
-                    Math.random() * 10 + 85,
-                    Math.random() * 10 + 80,
-                    Math.random() * 10 + 83,
-                    Math.random() * 10 + 78
-                ];
-                window.departmentChart.update();
-            }
-        }
+            // ================= OFFLINE DATA MANAGER =================
+            class OfflineDataManager {
+                constructor() {
+                    this.STORAGE_KEY = 'vehicle_services_offline_data';
+                    this.SYNC_HISTORY_KEY = 'sync_history';
+                    this.MAX_STORAGE = 10 * 1024 * 1024; // 10MB
+                    this.init();
+                }
 
-        // Show alerts
-        function showAlert(message, type = 'warning') {
-            const banner = document.getElementById('alertBanner');
-            const messageEl = document.getElementById('alertMessage');
-            
-            messageEl.textContent = message;
-            
-            if (type === 'success') {
-                banner.style.background = 'linear-gradient(90deg, #0e9f6e, #31c48d)';
-            } else if (type === 'info') {
-                banner.style.background = 'linear-gradient(90deg, #007749, #00a86b)';
-            } else {
-                banner.style.background = 'linear-gradient(90deg, #DE3831, #e74c3c)';
-            }
-            
-            banner.style.display = 'flex';
-            setTimeout(() => {
-                if (type !== 'warning') banner.style.display = 'none';
-            }, 5000);
-        }
-
-        // Live updates
-        function startLiveUpdates() {
-            setInterval(() => {
-                if (!document.getElementById('refreshBtn').classList.contains('spinning')) {
-                    // Random KPI updates
-                    const kpis = ['slaTime', 'fcrRate', 'autoValidated', 'revenueSaved'];
-                    const randomKpi = kpis[Math.floor(Math.random() * kpis.length)];
-                    const element = document.getElementById(randomKpi);
+                init() {
+                    // Check network status
+                    this.networkStatus = navigator.onLine;
+                    window.addEventListener('online', () => this.handleOnline());
+                    window.addEventListener('offline', () => this.handleOffline());
                     
-                    if (randomKpi === 'slaTime') {
-                        const newValue = (Math.random() * 4 + 14).toFixed(1) + " min";
-                        element.textContent = newValue;
-                        
-                        const slaCard = document.getElementById('slaCard');
-                        if (parseFloat(newValue) > 15) {
-                            slaCard.classList.add('alert');
-                        } else {
-                            slaCard.classList.remove('alert');
+                    // Initialize offline data
+                    this.pendingData = this.loadPendingData();
+                    this.syncHistory = this.loadSyncHistory();
+                    
+                    // Update UI
+                    this.updateUI();
+                    this.checkStorageUsage();
+                }
+
+                loadPendingData() {
+                    const data = localStorage.getItem(this.STORAGE_KEY);
+                    return data ? JSON.parse(data) : [];
+                }
+
+                loadSyncHistory() {
+                    const history = localStorage.getItem(this.SYNC_HISTORY_KEY);
+                    return history ? JSON.parse(history) : [];
+                }
+
+                savePendingData() {
+                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.pendingData));
+                    this.updateUI();
+                    this.checkStorageUsage();
+                }
+
+                addToSyncHistory(record) {
+                    this.syncHistory.unshift(record);
+                    if (this.syncHistory.length > 50) this.syncHistory.pop();
+                    localStorage.setItem(this.SYNC_HISTORY_KEY, JSON.stringify(this.syncHistory));
+                }
+
+                // Manual Data Entry
+                addManualEntry(data) {
+                    const entry = {
+                        id: 'manual_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                        type: 'manual_entry',
+                        timestamp: new Date().toISOString(),
+                        data: data,
+                        status: 'pending',
+                        syncAttempts: 0,
+                        lastAttempt: null
+                    };
+
+                    this.pendingData.push(entry);
+                    this.savePendingData();
+                    
+                    // Show confirmation
+                    showAlert(`Entry saved locally. Will sync when online.`, 'success');
+                    
+                    return entry;
+                }
+
+                // Sync Methods
+                async syncPendingData() {
+                    if (!this.networkStatus) {
+                        showAlert('Cannot sync while offline', 'warning');
+                        return { success: false, message: 'Offline' };
+                    }
+
+                    const pending = this.pendingData.filter(item => item.status === 'pending');
+                    if (pending.length === 0) {
+                        showAlert('No pending data to sync', 'info');
+                        return { success: true, message: 'No pending data' };
+                    }
+
+                    // Show sync progress
+                    this.showSyncProgress(pending.length);
+
+                    let successCount = 0;
+                    let failCount = 0;
+
+                    for (let i = 0; i < pending.length; i++) {
+                        const item = pending[i];
+                        try {
+                            // Simulate API call
+                            const result = await this.syncToServer(item);
+                            
+                            if (result.success) {
+                                item.status = 'synced';
+                                item.syncedAt = new Date().toISOString();
+                                successCount++;
+                                
+                                // Add to history
+                                this.addToSyncHistory({
+                                    timestamp: new Date().toISOString(),
+                                    operation: 'sync',
+                                    itemId: item.id,
+                                    status: 'success'
+                                });
+                            } else {
+                                item.status = 'failed';
+                                item.lastError = result.error;
+                                failCount++;
+                            }
+                            
+                            item.syncAttempts++;
+                            item.lastAttempt = new Date().toISOString();
+                            
+                            // Update progress
+                            this.updateSyncProgress(i + 1, pending.length);
+                            
+                        } catch (error) {
+                            item.status = 'failed';
+                            item.lastError = error.message;
+                            failCount++;
                         }
-                    } else if (randomKpi === 'fcrRate') {
-                        element.textContent = (Math.random() * 6 + 84).toFixed(1) + "%";
-                    } else if (randomKpi === 'autoValidated') {
-                        element.textContent = (Math.random() * 5 + 89).toFixed(1) + "%";
-                    } else if (randomKpi === 'revenueSaved') {
-                        element.textContent = "R " + (Math.random() * 200 + 500).toFixed(1) + "K";
+
+                        // Throttle requests
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+
+                    this.savePendingData();
+                    this.updateSyncUI();
+
+                    const message = `Synced ${successCount} items. ${failCount > 0 ? `${failCount} failed.` : ''}`;
+                    showAlert(message, failCount > 0 ? 'warning' : 'success');
+                    
+                    return { success: true, synced: successCount, failed: failCount };
+                }
+
+                async syncToServer(item) {
+                    // SIMULATED API CALL - Replace with actual implementation
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            // 90% success rate for simulation
+                            const success = Math.random() > 0.1;
+                            
+                            if (success) {
+                                resolve({
+                                    success: true,
+                                    serverId: 'server_' + Date.now(),
+                                    timestamp: new Date().toISOString()
+                                });
+                            } else {
+                                resolve({
+                                    success: false,
+                                    error: 'Server error or conflict'
+                                });
+                            }
+                        }, 500);
+                    });
+                }
+
+                // Export/Import Methods
+                exportPendingData(format = 'json') {
+                    const data = this.pendingData.filter(item => item.status === 'pending');
+                    
+                    if (format === 'csv') {
+                        const csv = this.convertToCSV(data);
+                        this.downloadFile(csv, 'pending_data.csv', 'text/csv');
+                    } else {
+                        const json = JSON.stringify(data, null, 2);
+                        this.downloadFile(json, 'pending_data.json', 'application/json');
                     }
                 }
-            }, 30000);
-        }
 
-        // 3CX Integration Functions (Example)
-        function connectTo3CX() {
-            // Example WebSocket connection to 3CX
-            /*
-            const socket = new WebSocket('wss://your-3cx-server:5001');
-            socket.onmessage = function(event) {
-                const data = JSON.parse(event.data);
-                updateCallCenterDisplay(data);
-            };
-            */
-            console.log('3CX integration would connect here');
-        }
+                importFromCSV(csvText) {
+                    const rows = csvText.split('\n');
+                    const headers = rows[0].split(',');
+                    
+                    for (let i = 1; i < rows.length; i++) {
+                        if (!rows[i].trim()) continue;
+                        
+                        const values = rows[i].split(',');
+                        const entry = {};
+                        
+                        headers.forEach((header, index) => {
+                            entry[header.trim()] = values[index] ? values[index].trim() : '';
+                        });
+                        
+                        this.addManualEntry(entry);
+                    }
+                    
+                    showAlert(`Imported ${rows.length - 1} records`, 'success');
+                }
 
-        function updateCallCenterDisplay(data) {
-            // Update UI with real 3CX data
-            document.getElementById('activeCalls').textContent = data.activeCalls;
-            document.getElementById('todayCalls').textContent = data.todayCalls;
-            document.getElementById('avgWaitTime').textContent = data.avgWaitTime;
-            document.getElementById('callAbandonment').textContent = data.abandonmentRate;
-        }
-    </script>
-</body>
+                // Utility Methods
+                convertToCSV(data) {
+                    if (data.length === 0) return '';
+                    
+                    const headers = Object.keys(data[0].data);
+                    const csv = [
+                        headers.join(','),
+                        ...data.map(item => headers.map(header => 
+                            `"${item.data[header] || ''}"`).join(','))
+                    ];
+                    
+                    return csv.join('\n');
+                }
+
+                downloadFile(content, filename, mimeType) {
+                    const blob = new Blob([content], { type: mimeType });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+
+                checkStorageUsage() {
+                    const data = JSON.stringify(this.pendingData);
+                    const size = new Blob([data]).size;
+                    const kb = (size / 1024).toFixed(2);
+                    
+                    document.getElementById('storageUsed').textContent = `${kb}KB`;
+                    
+                    // Warn if storage is getting full
+                    if (size > this.MAX_STORAGE * 0.8) {
+                        showAlert('Local storage is almost full. Please sync data.', 'warning');
+                    }
+                }
+
+                // UI Updates
+                updateUI() {
+                    const pendingCount = this.pendingData.filter(item => item.status === 'pending').length;
+                    
+                    // Update badge
+                    document.getElementById('pendingCount').textContent = pendingCount;
+                    document.getElementById('pendingTabCount').textContent = pendingCount;
+                    
+                    // Show/hide indicator
+                    const indicator = document.getElementById('offlineDataIndicator');
+                    indicator.style.display = pendingCount > 0 ? 'flex' : 'none';
+                    
+                    // Update pending table
+                    this.updatePendingTable();
+                    this.updateSyncHistory();
+                }
+
+                updatePendingTable() {
+                    const tbody = document.getElementById('pendingSyncTable');
+                    tbody.innerHTML = '';
+                    
+                    const pending = this.pendingData.filter(item => item.status === 'pending');
+                    
+                    pending.forEach(item => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                            <td>${item.data.vehicleId || 'N/A'}</td>
+                            <td>${item.data.station || 'N/A'}</td>
+                            <td>${item.data.serviceType || 'N/A'}</td>
+                            <td><span class="sync-status sync-pending">Pending</span></td>
+                            <td>
+                                <button onclick="offlineManager.syncSingleItem('${item.id}')" class="offline-btn sync" style="padding: 4px 8px; font-size: 12px;">
+                                    <i class="fas fa-sync"></i>
+                                </button>
+                                <button onclick="offlineManager.removeItem('${item.id}')" class="offline-btn manual" style="padding: 4px 8px; font-size: 12px; background: var(--danger-red);">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+
+                updateSyncHistory() {
+                    const tbody = document.getElementById('syncHistoryTable');
+                    tbody.innerHTML = '';
+                    
+                    this.syncHistory.slice(0, 10).forEach(record => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${new Date(record.timestamp).toLocaleString()}</td>
+                            <td>${record.operation}</td>
+                            <td>${record.itemId ? record.itemId.substring(0, 8) + '...' : 'Batch'}</td>
+                            <td><span class="sync-status ${record.status === 'success' ? 'sync-success' : 'sync-failed'}">
+                                ${record.status}
+                            </span></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+
+                // Event Handlers
+                handleOnline() {
+                    this.networkStatus = true;
+                    document.getElementById('offlineBanner').style.display = 'none';
+                    
+                    // Show reconnected message
+                    showAlert('Connection restored. Auto-syncing pending data...', 'success');
+                    
+                    // Auto-sync after 2 seconds
+                    setTimeout(() => {
+                        if (this.pendingData.filter(i => i.status === 'pending').length > 0) {
+                            this.syncPendingData();
+                        }
+                    }, 2000);
+                }
+
+                handleOffline() {
+                    this.networkStatus = false;
+                    document.getElementById('offlineBanner').style.display = 'flex';
+                    showAlert('Connection lost. Working in offline mode.', 'warning');
+                }
+
+                // Sync Progress UI
+                showSyncProgress(total) {
+                    document.getElementById('batchProgressText').textContent = '0%';
+                    document.getElementById('batchProgressBar').style.width = '0%';
+                    document.getElementById('batchStatus').textContent = `Syncing 0 of ${total} items...`;
+                }
+
+                updateSyncProgress(current, total) {
+                    const percent = Math.round((current / total) * 100);
+                    document.getElementById('batchProgressText').textContent = `${percent}%`;
+                    document.getElementById('batchProgressBar').style.width = `${percent}%`;
+                    document.getElementById('batchStatus').textContent = `Syncing ${current} of ${total} items...`;
+                }
+
+                // Public API Methods
+                syncSingleItem(itemId) {
+                    const item = this.pendingData.find(i => i.id === itemId);
+                    if (item && this.networkStatus) {
+                        this.syncToServer(item).then(result => {
+                            if (result.success) {
+                                item.status = 'synced';
+                                item.syncedAt = new Date().toISOString();
+                                this.savePendingData();
+                                showAlert('Item synced successfully', 'success');
+                            } else {
+                                showAlert('Sync failed: ' + result.error, 'warning');
+                            }
+                        });
+                    }
+                }
+
+                removeItem(itemId) {
+                    if (confirm('Remove this pending item?')) {
+                        this.pendingData = this.pendingData.filter(i => i.id !== itemId);
+                        this.savePendingData();
+                        showAlert('Item removed', 'info');
+                    }
+                }
+
+                clearAllPending() {
+                    if (confirm('Clear all pending sync items?')) {
+                        this.pendingData = this.pendingData.filter(item => item.status !== 'pending');
+                        this.savePendingData();
+                        showAlert('All pending items cleared', 'info');
+                    }
+                }
+            }
+
+            // ================= DASHBOARD INITIALIZATION =================
+            let offlineManager;
+
+            // Initialize the dashboard
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize Dashboard Components
+                initKPICards();
+                initCharts();
+                initMap();
+                initDepartmentTable();
+                initEventListeners();
+                startLiveUpdates();
+                simulate3CXIntegration();
+                
+                // Initialize Offline Manager
+                offlineManager = new OfflineDataManager();
+                
+                // Initialize sync event listeners
+                initSyncEventListeners();
+                
+                // Check initial network status
+                if (!navigator.onLine) {
+                    offlineManager.handleOffline();
+                }
+            });
+
+            // Initialize KPI cards with dynamic data
+            function initKPICards() {
+                const kpiData = {
+                    slaTime: (Math.random() * 4 + 14).toFixed(1) + " min",
+                    fcrRate: (Math.random() * 6 + 84).toFixed(1) + "%",
+                    autoValidated: (Math.random() * 5 + 89).toFixed(1) + "%",
+                    revenueSaved: "R " + (Math.random() * 200 + 500).toFixed(1) + "K"
+                };
+                
+                document.getElementById('slaTime').textContent = kpiData.slaTime;
+                document.getElementById('fcrRate').textContent = kpiData.fcrRate;
+                document.getElementById('autoValidated').textContent = kpiData.autoValidated;
+                document.getElementById('revenueSaved').textContent = kpiData.revenueSaved;
+                
+                const slaValue = parseFloat(kpiData.slaTime);
+                const slaCard = document.getElementById('slaCard');
+                if (slaValue > 15) {
+                    slaCard.classList.add('alert');
+                } else {
+                    slaCard.classList.remove('alert');
+                }
+            }
+
+            // Initialize charts
+            function initCharts() {
+                // Call Centre Performance Chart
+                const callCenterCtx = document.getElementById('callCenterChart').getContext('2d');
+                window.callCenterChart = new Chart(callCenterCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00'],
+                        datasets: [
+                            {
+                                label: 'Abandoned Calls',
+                                data: [6.2, 8.1, 7.3, 5.9, 9.2, 6.8, 4.5],
+                                borderColor: 'rgba(0, 119, 73, 1)',
+                                backgroundColor: 'rgba(0, 119, 73, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            },
+                            {
+                                label: 'FCR Rate',
+                                data: [85, 82, 87, 89, 84, 88, 91],
+                                borderColor: 'rgba(14, 159, 110, 1)',
+                                backgroundColor: 'rgba(14, 159, 110, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                                ticks: { callback: value => value + '%' }
+                            },
+                            x: { grid: { color: 'rgba(0, 0, 0, 0.05)' } }
+                        }
+                    }
+                });
+
+                // Department Performance Chart
+                const deptCtx = document.getElementById('departmentChart').getContext('2d');
+                window.departmentChart = new Chart(deptCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['SAPS', 'Health', 'Municipal', 'Emergency'],
+                        datasets: [{
+                            label: 'Service Completion %',
+                            data: [94, 88, 91, 86],
+                            backgroundColor: [
+                                'rgba(26, 35, 126, 0.8)',
+                                'rgba(46, 125, 50, 0.8)',
+                                'rgba(239, 108, 0, 0.8)',
+                                'rgba(222, 56, 49, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgb(26, 35, 126)',
+                                'rgb(46, 125, 50)',
+                                'rgb(239, 108, 0)',
+                                'rgb(222, 56, 49)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: { callback: value => value + '%' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Initialize map with SAPS stations
+            function initMap() {
+                const map = L.map('jobDistributionMap').setView([-26.2041, 28.0473], 10);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+                // SAPS Stations in Gauteng
+                const sapsStations = [
+                    {lat: -26.2675, lng: 27.8587, name: "Maponya SAPS", dept: "police", vehicles: 12},
+                    {lat: -26.2456, lng: 27.8512, name: "Pimville SAPS", dept: "police", vehicles: 8},
+                    {lat: -25.7547, lng: 28.2187, name: "Sunnyside SAPS", dept: "police", vehicles: 15},
+                    {lat: -25.5083, lng: 28.1000, name: "Mabopane SAPS", dept: "police", vehicles: 10},
+                    {lat: -26.2041, lng: 28.0473, name: "JHB Central SAPS", dept: "police", vehicles: 20},
+                    {lat: -26.1076, lng: 28.0567, name: "Sandton SAPS", dept: "police", vehicles: 12},
+                    {lat: -25.7598, lng: 28.1994, name: "Steve Biko Hospital", dept: "health", vehicles: 10},
+                    {lat: -26.1629, lng: 27.9867, name: "Bara Hospital", dept: "health", vehicles: 15},
+                    {lat: -26.1076, lng: 28.0567, name: "JHB Metro", dept: "municipal", vehicles: 25},
+                    {lat: -25.7547, lng: 28.2187, name: "Tshwane Metro", dept: "municipal", vehicles: 20}
+                ];
+
+                sapsStations.forEach(station => {
+                    let color;
+                    if (station.dept === "police") color = "#1a237e";
+                    else if (station.dept === "health") color = "#2e7d32";
+                    else color = "#ef6c00";
+
+                    L.circleMarker([station.lat, station.lng], {
+                        radius: Math.sqrt(station.vehicles) * 2,
+                        fillColor: color,
+                        color: '#111827',
+                        weight: 1,
+                        fillOpacity: 0.7
+                    }).addTo(map).bindPopup(`
+                        <strong>${station.name}</strong><br>
+                        Department: ${departments[station.dept].name}<br>
+                        Total Vehicles: ${station.vehicles}<br>
+                        Active Now: ${Math.floor(station.vehicles * 0.7)}
+                    `);
+                });
+                
+                window.jobDistributionMap = map;
+            }
+
+            // Initialize department table
+            function initDepartmentTable() {
+                const tableBody = document.getElementById('departmentTable');
+                tableBody.innerHTML = '';
+
+                const serviceRequests = [
+                    { id: "VH-2023-001", dept: "police", station: "Maponya SAPS", type: "Engine Repair", status: "In Progress", invoice: "Pending", updated: "15 min ago" },
+                    { id: "VH-2023-002", dept: "police", station: "Pimville SAPS", type: "Brake Service", status: "Completed", invoice: "Approved", updated: "1 hour ago" },
+                    { id: "VH-2023-003", dept: "health", station: "Matoks Hospital", type: "AC Repair", status: "Pending", invoice: "Validated", updated: "45 min ago" },
+                    { id: "VH-2023-004", dept: "police", station: "Sunnyside SAPS", type: "Tire Replacement", status: "In Progress", invoice: "Processing", updated: "30 min ago" },
+                    { id: "VH-2023-005", dept: "municipal", station: "JHB Metro", type: "Suspension", status: "Completed", invoice: "Paid", updated: "2 hours ago" },
+                    { id: "VH-2023-006", dept: "health", station: "Bara Hospital", type: "Electrical", status: "Pending", invoice: "Disputed", updated: "1 hour ago" },
+                    { id: "VH-2023-007", dept: "police", station: "Mabopane SAPS", type: "Oil Change", status: "Completed", invoice: "Approved", updated: "3 hours ago" },
+                    { id: "VH-2023-008", dept: "municipal", station: "Tshwane Metro", type: "Transmission", status: "In Progress", invoice: "Pending", updated: "20 min ago" }
+                ];
+
+                serviceRequests.forEach(req => {
+                    let deptClass = "dept-police";
+                    if (req.dept === "health") deptClass = "dept-health";
+                    if (req.dept === "municipal") deptClass = "dept-municipal";
+
+                    let statusClass = "status-pending";
+                    if (req.status === "Completed") statusClass = "status-approved";
+                    if (req.status === "In Progress") statusClass = "status-pending";
+
+                    let invoiceClass = "status-pending";
+                    if (req.invoice === "Approved" || req.invoice === "Paid") invoiceClass = "status-approved";
+                    if (req.invoice === "Disputed") invoiceClass = "status-rejected";
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${req.id}</strong></td>
+                        <td><span class="dept-badge ${deptClass}">${departments[req.dept].name}</span></td>
+                        <td>${req.station}</td>
+                        <td>${req.type}</td>
+                        <td><span class="status-badge ${statusClass}">${req.status}</span></td>
+                        <td><span class="status-badge ${invoiceClass}">${req.invoice}</span></td>
+                        <td>${req.updated}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            // Event listeners
+            function initEventListeners() {
+                // Refresh button
+                document.getElementById('refreshBtn').addEventListener('click', function() {
+                    this.classList.add('spinning');
+                    setTimeout(() => {
+                        refreshAllData();
+                        this.classList.remove('spinning');
+                        showAlert('Dashboard refreshed successfully', 'success');
+                    }, 1000);
+                });
+
+                // Department tabs
+                document.querySelectorAll('.dept-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        document.querySelectorAll('.dept-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        filterByDepartment(this.dataset.dept);
+                    });
+                });
+
+                // Report button
+                document.getElementById('reportBtn').addEventListener('click', function() {
+                    document.getElementById('reportModal').style.display = 'flex';
+                });
+
+                document.getElementById('closeReport').addEventListener('click', function() {
+                    document.getElementById('reportModal').style.display = 'none';
+                });
+
+                // Generate PDF
+                document.getElementById('generatePDF').addEventListener('click', function() {
+                    this.classList.add('spinning');
+                    setTimeout(() => {
+                        generatePerformanceReport();
+                        this.classList.remove('spinning');
+                        document.getElementById('reportModal').style.display = 'none';
+                        showAlert('Performance report generated successfully', 'success');
+                    }, 1500);
+                });
+
+                // Alert close
+                document.getElementById('closeAlert').addEventListener('click', function() {
+                    document.getElementById('alertBanner').style.display = 'none';
+                });
+
+                // Table refresh
+                document.getElementById('refreshTable').addEventListener('click', function() {
+                    initDepartmentTable();
+                    showAlert('Service requests table refreshed', 'info');
+                });
+            }
+
+            // Initialize sync event listeners
+            function initSyncEventListeners() {
+                // Manual Entry Button
+                document.getElementById('manualEntryBtn').addEventListener('click', function() {
+                    document.getElementById('syncModal').style.display = 'flex';
+                });
+                
+                // Sync Now Button
+                document.getElementById('syncNowBtn').addEventListener('click', function() {
+                    offlineManager.syncPendingData();
+                });
+                
+                // Close Sync Modal
+                document.getElementById('closeSync').addEventListener('click', function() {
+                    document.getElementById('syncModal').style.display = 'none';
+                });
+                
+                // Sync All Button
+                document.getElementById('syncAllBtn').addEventListener('click', function() {
+                    offlineManager.syncPendingData();
+                });
+                
+                // Clear Pending Button
+                document.getElementById('clearPendingBtn').addEventListener('click', function() {
+                    offlineManager.clearAllPending();
+                });
+                
+                // Export Pending Button
+                document.getElementById('exportPendingBtn').addEventListener('click', function() {
+                    offlineManager.exportPendingData('csv');
+                });
+                
+                // Manual Entry Form
+                document.getElementById('manualEntryForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = {
+                        department: document.getElementById('entryDept').value,
+                        station: document.getElementById('entryStation').value,
+                        vehicleId: document.getElementById('entryVehicleId').value,
+                        serviceType: document.getElementById('entryServiceType').value,
+                        amount: document.getElementById('entryAmount').value,
+                        technician: document.getElementById('entryTechnician').value,
+                        notes: document.getElementById('entryNotes').value,
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    offlineManager.addManualEntry(formData);
+                    
+                    // Reset form
+                    this.reset();
+                    document.getElementById('syncModal').style.display = 'none';
+                });
+                
+                // Tab Switching
+                document.querySelectorAll('.sync-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const tabId = this.dataset.tab;
+                        
+                        // Update active tab
+                        document.querySelectorAll('.sync-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Show correct section
+                        document.querySelectorAll('.sync-section').forEach(section => {
+                            section.classList.remove('active');
+                        });
+                        document.getElementById(`tab-${tabId}`).classList.add('active');
+                        
+                        // Refresh data if needed
+                        if (tabId === 'pending') {
+                            offlineManager.updatePendingTable();
+                        } else if (tabId === 'history') {
+                            offlineManager.updateSyncHistory();
+                        }
+                    });
+                });
+                
+                // Import CSV
+                document.getElementById('importCSVBtn').addEventListener('click', function() {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = '.csv,.txt';
+                    
+                    input.onchange = function(e) {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            offlineManager.importFromCSV(event.target.result);
+                        };
+                        reader.readAsText(file);
+                    };
+                    
+                    input.click();
+                });
+
+                // Backup/Restore buttons
+                document.getElementById('backupDataBtn').addEventListener('click', backupData);
+                document.getElementById('restoreBackupBtn').addEventListener('click', restoreBackup);
+                
+                // Offline Data Indicator Click
+                document.getElementById('offlineDataIndicator').addEventListener('click', function() {
+                    document.getElementById('syncModal').style.display = 'flex';
+                    // Switch to pending tab
+                    document.querySelectorAll('.sync-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelector('.sync-tab[data-tab="pending"]').classList.add('active');
+                    document.querySelectorAll('.sync-section').forEach(s => s.classList.remove('active'));
+                    document.getElementById('tab-pending').classList.add('active');
+                });
+            }
+
+            // Filter by department
+            function filterByDepartment(dept) {
+                const rows = document.querySelectorAll('#departmentTable tr');
+                rows.forEach(row => {
+                    if (dept === 'all') {
+                        row.style.display = '';
+                    } else {
+                        const deptCell = row.querySelector('.dept-badge');
+                        if (deptCell) {
+                            const rowDept = deptCell.textContent.includes('SAPS') ? 'police' :
+                                          deptCell.textContent.includes('Health') ? 'health' :
+                                          deptCell.textContent.includes('Municipal') ? 'municipal' : '';
+                            row.style.display = rowDept === dept ? '' : 'none';
+                        }
+                    }
+                });
+            }
+
+            // Simulate 3CX integration
+            function simulate3CXIntegration() {
+                // Simulate live call data updates
+                setInterval(() => {
+                    const activeCalls = Math.floor(Math.random() * 5) + 6;
+                    const todayCalls = Math.floor(Math.random() * 50) + 120;
+                    const avgWait = `${Math.floor(Math.random() * 2)}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`;
+                    const abandonment = (Math.random() * 2 + 3).toFixed(1) + '%';
+                    
+                    document.getElementById('activeCalls').textContent = activeCalls;
+                    document.getElementById('todayCalls').textContent = todayCalls;
+                    document.getElementById('avgWaitTime').textContent = avgWait;
+                    document.getElementById('callAbandonment').textContent = abandonment;
+                    document.getElementById('liveCallsBadge').textContent = activeCalls;
+                    
+                    // Update agents status
+                    const activeAgents = Math.floor(Math.random() * 4) + 8;
+                    document.getElementById('activeAgents').textContent = `${activeAgents}/12`;
+                    document.getElementById('callQueue').textContent = `${Math.floor(Math.random() * 6)} calls`;
+                    
+                    // Randomly show call alerts
+                    if (Math.random() > 0.8) {
+                        const calls = ['New call from Sunnyside SAPS', 'Emergency vehicle service request', 'Priority call: Mabopane SAPS'];
+                        showAlert(calls[Math.floor(Math.random() * calls.length)], 'info');
+                    }
+                }, 10000);
+            }
+
+            // Generate performance report
+            function generatePerformanceReport() {
+                const period = document.getElementById('reportPeriod').value;
+                const dept = document.getElementById('reportDept').value;
+                
+                const report = {
+                    period: period,
+                    department: dept,
+                    timestamp: new Date().toLocaleString('en-ZA'),
+                    metrics: {
+                        slaCompliance: Math.floor(Math.random() * 10) + 85,
+                        fcrRate: Math.floor(Math.random() * 10) + 80,
+                        autoValidation: Math.floor(Math.random() * 10) + 85,
+                        revenueProtected: `R ${(Math.random() * 100 + 500).toFixed(1)}K`
+                    },
+                    recommendations: [
+                        "Improve response time for SAPS vehicles in Soweto area",
+                        "Increase 3CX agent training for health department queries",
+                        "Implement mobile invoice validation for field technicians"
+                    ]
+                };
+                
+                console.log('Performance Report Generated:', report);
+                // In production, this would generate an actual PDF/Excel file
+            }
+
+            // Refresh all data
+            function refreshAllData() {
+                initKPICards();
+                initDepartmentTable();
+                
+                // Update charts with new data
+                if (window.callCenterChart) {
+                    window.callCenterChart.data.datasets[0].data = window.callCenterChart.data.datasets[0].data.map(() => 
+                        Math.random() * 4 + 5
+                    );
+                    window.callCenterChart.data.datasets[1].data = window.callCenterChart.data.datasets[1].data.map(() => 
+                        Math.random() * 10 + 80
+                    );
+                    window.callCenterChart.update();
+                }
+                
+                if (window.departmentChart) {
+                    window.departmentChart.data.datasets[0].data = [
+                        Math.random() * 10 + 85,
+                        Math.random() * 10 + 80,
+                        Math.random() * 10 + 83,
+                        Math.random() * 10 + 78
+                    ];
+                    window.departmentChart.update();
+                }
+
+                // Also update offline manager UI
+                if (offlineManager) {
+                    offlineManager.updateUI();
+                }
+            }
+
+            // Show alerts
+            function showAlert(message, type = 'warning') {
+                const banner = document.getElementById('alertBanner');
+                const messageEl = document.getElementById('alertMessage');
+                
+                messageEl.textContent = message;
+                
+                if (type === 'success') {
+                    banner.style.background = 'linear-gradient(90deg, #0e9f6e, #31c48d)';
+                } else if (type === 'info') {
+                    banner.style.background = 'linear-gradient(90deg, #007749, #00a86b)';
+                } else {
+                    banner.style.background = 'linear-gradient(90deg, #DE3831, #e74c3c)';
+                }
+                
+                banner.style.display = 'flex';
+                setTimeout(() => {
+                    if (type !== 'warning') banner.style.display = 'none';
+                }, 5000);
+            }
+
+            // Live updates
+            function startLiveUpdates() {
+                setInterval(() => {
+                    if (!document.getElementById('refreshBtn').classList.contains('spinning')) {
+                        // Random KPI updates
+                        const kpis = ['slaTime', 'fcrRate', 'autoValidated', 'revenueSaved'];
+                        const randomKpi = kpis[Math.floor(Math.random() * kpis.length)];
+                        const element = document.getElementById(randomKpi);
+                        
+                        if (randomKpi === 'slaTime') {
+                            const newValue = (Math.random() * 4 + 14).toFixed(1) + " min";
+                            element.textContent = newValue;
+                            
+                            const slaCard = document.getElementById('slaCard');
+                            if (parseFloat(newValue) > 15) {
+                                slaCard.classList.add('alert');
+                            } else {
+                                slaCard.classList.remove('alert');
+                            }
+                        } else if (randomKpi === 'fcrRate') {
+                            element.textContent = (Math.random() * 6 + 84).toFixed(1) + "%";
+                        } else if (randomKpi === 'autoValidated') {
+                            element.textContent = (Math.random() * 5 + 89).toFixed(1) + "%";
+                        } else if (randomKpi === 'revenueSaved') {
+                            element.textContent = "R " + (Math.random() * 200 + 500).toFixed(1) + "K";
+                        }
+                    }
+                }, 30000);
+            }
+
+            // Backup & Restore Functions
+            function backupData() {
+                const data = {
+                    pending: offlineManager.pendingData,
+                    history: offlineManager.syncHistory,
+                    timestamp: new Date().toISOString()
+                };
+                
+                const json = JSON.stringify(data, null, 2);
+                offlineManager.downloadFile(json, `vehicle_backup_${Date.now()}.json`, 'application/json');
+                showAlert('Backup created successfully', 'success');
+            }
+
+            function restoreBackup() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                
+                input.onchange = function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            
+                            if (confirm('Restore backup? This will replace current offline data.')) {
+                                localStorage.setItem(offlineManager.STORAGE_KEY, JSON.stringify(data.pending || []));
+                                localStorage.setItem(offlineManager.SYNC_HISTORY_KEY, JSON.stringify(data.history || []));
+                                
+                                offlineManager.pendingData = data.pending || [];
+                                offlineManager.syncHistory = data.history || [];
+                                offlineManager.updateUI();
+                                
+                                showAlert('Backup restored successfully', 'success');
+                            }
+                        } catch (error) {
+                            showAlert('Invalid backup file', 'warning');
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                
+                input.click();
+            }
+
+            // 3CX Integration Functions (Example)
+            function connectTo3CX() {
+                // Example WebSocket connection to 3CX
+                /*
+                const socket = new WebSocket('wss://your-3cx-server:5001');
+                socket.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    updateCallCenterDisplay(data);
+                };
+                */
+                console.log('3CX integration would connect here');
+            }
+
+            function updateCallCenterDisplay(data) {
+                // Update UI with real 3CX data
+                document.getElementById('activeCalls').textContent = data.activeCalls;
+                document.getElementById('todayCalls').textContent = data.todayCalls;
+                document.getElementById('avgWaitTime').textContent = data.avgWaitTime;
+                document.getElementById('callAbandonment').textContent = data.abandonmentRate;
+            }
+
+            // Make offlineManager globally accessible for button onclick events
+            window.offlineManager = offlineManager;
+        </script>
+    </body>
 </html>
